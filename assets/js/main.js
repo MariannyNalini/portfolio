@@ -26,8 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
       const titulo = project[`titulo_${currentLang}`]
       const descricao = project[`descricao_${currentLang}`]
       const btnTexto = currentLang === 'pt' ? 'Ver projeto' : 'View project'
+
+      const altText =
+        currentLang === 'pt'
+          ? `Prévia do projeto ${titulo}`
+          : `Preview of the ${titulo} project`
+
       article.innerHTML = `
-          <img src="${project.imagem}" alt="Thumbnail ${project.titulo}">
+          <img src="${project.imagem}" alt="${altText}" loading="lazy" decoding="async">
           <div class="content">
               <div><span>${categoria}</span></div>
               <div>

@@ -1,13 +1,9 @@
 <?php
-session_start();
-if (isset($_GET['lang']) && in_array($_GET['lang'], ['pt', 'en'])) {
-    $_SESSION['lang'] = $_GET['lang'];
-}
-$lang = $_SESSION['lang'] ?? 'pt';
+$lang = ($_GET['lang'] ?? 'pt') === 'en' ? 'en' : 'pt';
 $t = include "lang/{$lang}.php";
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="<?php echo $lang === 'en' ? 'en' : 'pt-BR'; ?>">
     <head>
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJ5PXV8HSQ"></script>
@@ -19,22 +15,26 @@ $t = include "lang/{$lang}.php";
             gtag('config', 'G-WJ5PXV8HSQ');
         </script>
         <meta charset="UTF-8">
-        <title>Marianny Nalini | Desenvolvedora Front-End & WordPress</title>
-        <meta name="description" content="Desenvolvimento front-end especializado para agências e empresas. Transformo designs em landing pages, sites WordPress e experiências de alta performance.">
-        <meta name="keywords" content="Desenvolvedora Front-End, WordPress, Landing Pages, Performance, Email Marketing, São Vicente">
+        <title><?php echo $t['meta_title']; ?></title>
+        <meta name="description" content="<?php echo $t['meta_description']; ?>">
+        <meta name="keywords" content="<?php echo $t['meta_keywords']; ?>">
         <meta name="author" content="Marianny Nalini">
-        <link rel="canonical" href="https://mariannynalini.com.br/">
 
-        <meta property="og:title" content="Marianny Nalini | Desenvolvedora Front-End & WordPress">
-        <meta property="og:description" content="Soluções técnicas em WordPress, Landing Pages e Performance para tirar o seu projeto do papel.">
+        <link rel="canonical" href="https://mariannynalini.com.br/<?php echo $lang === 'en' ? '?lang=en' : ''; ?>">
+        <link rel="alternate" hreflang="pt-BR" href="https://mariannynalini.com.br/">
+        <link rel="alternate" hreflang="en" href="https://mariannynalini.com.br/?lang=en">
+        <link rel="alternate" hreflang="x-default" href="https://mariannynalini.com.br/">
+
+        <meta property="og:title" content="<?php echo $t['meta_title']; ?>">
+        <meta property="og:description" content="<?php echo $t['meta_description']; ?>">
         <meta property="og:image" content="https://mariannynalini.com.br/assets/img/hero.png">
-        <meta property="og:url" content="https://mariannynalini.com.br/">
+        <meta property="og:url" content="https://mariannynalini.com.br/<?php echo $lang === 'en' ? '?lang=en' : ''; ?>">
         <meta property="og:type" content="website">
-        <meta property="og:locale" content="pt_BR">
+        <meta property="og:locale" content="<?php echo $lang === 'en' ? 'en_US' : 'pt_BR'; ?>">
 
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="Marianny Nalini | Desenvolvedora Front-End & WordPress">
-        <meta name="twitter:description" content="Desenvolvimento front-end focado em performance, WordPress e landing pages para agências e profissionais.">
+        <meta name="twitter:title" content="<?php echo $t['meta_title']; ?>">
+        <meta name="twitter:description" content="<?php echo $t['meta_description']; ?>">
         <meta name="twitter:image" content="https://mariannynalini.com.br/assets/img/hero.png">
 
         <meta name="robots" content="index, follow">
@@ -73,7 +73,7 @@ $t = include "lang/{$lang}.php";
                             <li><a href="#inicio"><?php echo $t['nav_inicio']; ?></a></li>
                             <li><a href="#servicos"><?php echo $t['nav_servicos']; ?></a></li>
                             <li><a href="#projetos"><?php echo $t['nav_projetos']; ?></a></li>
-                            <li><a href="#processos"><?php echo $t['nav_processos']; ?></a></li>
+                            <li><a href="#processo"><?php echo $t['nav_processo']; ?></a></li>
                         </ul>
                         <div class="nav-btn-container">
                             <a href="#contato" class="btn btn-primary"><?php echo $t['btn_orcamento']; ?></a>
@@ -90,7 +90,7 @@ $t = include "lang/{$lang}.php";
         <div class="menu-overlay"></div>
 
         <main>
-            <section id="hero">
+            <section id="inicio">
                 <div class="container">
                     <div class="hero-image-wrapper">
                         <img src="assets/img/hero.png" alt="Mockup de dispositivos exibindo projetos digitais">
@@ -241,7 +241,7 @@ $t = include "lang/{$lang}.php";
                 </div>
             </section>
 
-            <section id="processos">
+            <section id="processo">
                 <div class="container"> 
                     <h3 class="subheading"><?php echo $t['como_trabalho_sub']; ?></h3>
                     <h2 class="heading"><?php echo $t['como_trabalho_head']; ?></h2>
@@ -548,7 +548,7 @@ $t = include "lang/{$lang}.php";
                         <li><a href="#inicio"><?php echo $t['nav_inicio']; ?></a></li>
                         <li><a href="#servicos"><?php echo $t['nav_servicos']; ?></a></li>
                         <li><a href="#projetos"><?php echo $t['nav_projetos']; ?></a></li>
-                        <li><a href="#para-agencias"><?php echo $t['btn_orcamento']; ?></a></li>
+                        <li><a href="#processo"><?php echo $t['nav_processo']; ?></a></li>
                     </ul>
                 </div>
                 <div class="footer-col">

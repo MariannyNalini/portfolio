@@ -1,11 +1,15 @@
 <?php
 return [
+    'meta_title' => 'Marianny Nalini | Front-End & WordPress Developer',
+    'meta_description' => 'Specialized front-end development for agencies and companies. I turn designs into landing pages, WordPress websites, and high-performance digital experiences.',
+    'meta_keywords' => 'Front-End Developer, WordPress, Landing Pages, Performance, Email Marketing, São Vicente',
+
     // Header & Nav
     'role' => 'Front-End Developer & WordPress',
     'nav_inicio' => 'Home',
     'nav_servicos' => 'Services',
     'nav_projetos' => 'Projects',
-    'nav_processos' => 'Workflow',
+    'nav_processo' => 'Workflow',
     'btn_orcamento' => 'Request a Quote',
 
     // Hero
@@ -41,7 +45,7 @@ return [
     'pq_3_title' => 'Local businesses & companies',
     'pq_3_desc' => 'Fast, modern, and optimized websites to attract customers and build trust.',
 
-    // Processos
+    // Processo
     'como_trabalho_sub' => 'HOW I WORK',
     'como_trabalho_head' => 'A simple and transparent process',
     'passo_1_titulo' => '01. Alignment',

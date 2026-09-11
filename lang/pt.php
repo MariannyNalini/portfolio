@@ -1,11 +1,16 @@
 <?php
 return [
+
+    'meta_title' => 'Marianny Nalini | Desenvolvedora Front-End & WordPress',
+    'meta_description' => 'Desenvolvimento front-end especializado para agências e empresas. Transformo designs em landing pages, sites WordPress e experiências de alta performance.',
+    'meta_keywords' => 'Desenvolvedora Front-End, WordPress, Landing Pages, Performance, Email Marketing, São Vicente',
+
     // Header & Nav
     'role' => 'Desenvolvedora Front-End & WordPress',
     'nav_inicio' => 'Início',
     'nav_servicos' => 'Serviços',
     'nav_projetos' => 'Projetos',
-    'nav_processos' => 'Processos',
+    'nav_processo' => 'Processo',
     'btn_orcamento' => 'Solicitar Orçamento',
 
     // Hero
@@ -41,7 +46,7 @@ return [
     'pq_3_title' => 'Negócios locais e empresas',
     'pq_3_desc' => 'Sites rápidos, modernos e otimizados para atrair clientes e gerar confiança.',
 
-    // Processos
+    // Processo
     'como_trabalho_sub' => 'COMO TRABALHO',
     'como_trabalho_head' => 'Um processo simples e transparente',
     'passo_1_titulo' => '01. Alinhamento',
