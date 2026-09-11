@@ -64,6 +64,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = filter_var(trim($_POST["email"] ?? ''), FILTER_SANITIZE_EMAIL);
     $tipo_projeto = trim(strip_tags($_POST["tipo_projeto"] ?? ''));
     $prazo_desejado = trim(strip_tags($_POST["prazo_desejado"] ?? ''));
+    $possui_layout = trim(strip_tags($_POST["possui_layout"] ?? ''));
+    $tipo_contrato = trim(strip_tags($_POST["tipo_contrato"] ?? ''));
     $mensagem = trim(strip_tags($_POST["mensagem"] ?? ''));
 
     $erros = [];
@@ -72,6 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { $erros[] = "O e-mail informado é inválido."; }
     if (empty($tipo_projeto)) { $erros[] = "Selecione um tipo de projeto válido."; }
     if (empty($prazo_desejado)) { $erros[] = "Selecione o prazo desejado."; }
+    if (empty($possui_layout)) { $erros[] = "Selecione a opção."; }
+    if (empty($tipo_contrato)) { $erros[] = "Selecione a opção."; }
     if (empty($mensagem)) { $erros[] = "A mensagem não pode estar vazia."; }
 
     if (!empty($erros)) {
@@ -104,9 +108,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $mail->Port       = 587;
         $mail->CharSet    = 'UTF-8';
 
-        $mail->setFrom($smtpUser, 'Portfólio - Contato');
+        $mail->setFrom($smtpUser, 'Site - Contato (' . $nome . ')');
         $mail->addAddress($mailTo, 'Marianny');
-        
         $mail->addReplyTo($email, $nome);
 
         $mail->isHTML(true);
@@ -116,6 +119,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                          "<p><strong>E-mail:</strong> " . htmlspecialchars($email) . "</p>" .
                          "<p><strong>Tipo de Projeto:</strong> " . htmlspecialchars($tipo_projeto) . "</p>" .
                          "<p><strong>Prazo Desejado:</strong> " . htmlspecialchars($prazo_desejado) . "</p>" .
+                         "<p><strong>Você já possui o layout/design?:</strong> " . htmlspecialchars($possui_layout) . "</p>" .
+                         "<p><strong>Como você está buscando contratar?:</strong> " . htmlspecialchars($tipo_contrato) . "</p>" .
                          "<p><strong>Mensagem:</strong><br>" . nl2br(htmlspecialchars($mensagem)) . "</p>";
 
         $mail->send();

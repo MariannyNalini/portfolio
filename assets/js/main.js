@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-  gsap.registerPlugin(ScrollTrigger)
   let allProjects = []
   let itemsPerPage = 4
   let currentIndex = 0
@@ -16,37 +15,29 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch((error) => console.error('Erro ao carregar os projetos:', error))
 
   function renderProjects() {
+    const currentLang = document.body.getAttribute('data-lang') || 'pt'
+
     const nextIndex = currentIndex + itemsPerPage
     const slice = allProjects.slice(currentIndex, nextIndex)
 
     slice.forEach((project, index) => {
       const article = document.createElement('article')
+      const categoria = project[`categoria_${currentLang}`]
+      const titulo = project[`titulo_${currentLang}`]
+      const descricao = project[`descricao_${currentLang}`]
+      const btnTexto = currentLang === 'pt' ? 'Ver projeto' : 'View project'
       article.innerHTML = `
           <img src="${project.imagem}" alt="Thumbnail ${project.titulo}">
           <div class="content">
-              <div><span>${project.categoria}</span></div>
+              <div><span>${categoria}</span></div>
               <div>
-                  <h3>${project.titulo}</h3>
-                  <p>${project.descricao}</p>
+                  <h3>${titulo}</h3>
+                  <p>${descricao}</p>
               </div>
-              <a href="${project.link}" target="_blank">Ver projeto</a>
+              <a href="${project.link}" target="_blank">${btnTexto}</a>
           </div>
       `
       grid.appendChild(article)
-
-      // Animação individual com GSAP e ScrollTrigger
-      gsap.from(article, {
-        scrollTrigger: {
-          trigger: article,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-        opacity: 0,
-        y: 40,
-        duration: 0.6,
-        delay: index * 0.1,
-        ease: 'power2.out',
-      })
     })
 
     currentIndex = nextIndex
@@ -132,6 +123,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const email = document.querySelector('#email')
   const tipoProjeto = document.querySelector('#tipo_projeto')
   const prazo = document.querySelector('#prazo_desejado')
+  const layout = document.querySelector('#possui_layout')
+  const contrato = document.querySelector('#tipo_contrato')
   const mensagem = document.querySelector('#mensagem')
 
   nome.addEventListener('input', () => {
@@ -175,17 +168,26 @@ document.addEventListener('DOMContentLoaded', function () {
       isValid = false
     }
 
+    if (!layout.value) {
+      showError(prazo, 'Selecione a opção.')
+      isValid = false
+    }
+
+    if (!contrato.value) {
+      showError(prazo, 'Selecione a opção.')
+      isValid = false
+    }
+
     if (!mensagem.value.trim()) {
       showError(mensagem, 'Escreva uma breve mensagem sobre o projeto.')
       isValid = false
     }
 
     if (!isValid) return
-
     const submitBtn = form.querySelector('button[type="submit"]')
     const originalText = submitBtn ? submitBtn.textContent : 'Enviar'
     if (submitBtn) {
-      submitBtn.textContent = 'Enviando...'
+      submitBtn.textContent = 'Enviando mensagem...'
       submitBtn.disabled = true
       submitBtn.style.opacity = '0.7'
     }
@@ -201,7 +203,6 @@ document.addEventListener('DOMContentLoaded', function () {
       if (response.ok) {
         modal.classList.add('ativo')
         form.reset()
-
         document
           .querySelectorAll('.custom-select-wrapper')
           .forEach((wrapper) => {
@@ -214,6 +215,12 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     } catch (error) {
       alert('Erro de conexão com o servidor.')
+    } finally {
+      if (submitBtn) {
+        submitBtn.textContent = originalText
+        submitBtn.disabled = false
+        submitBtn.style.opacity = '1'
+      }
     }
   })
 
@@ -266,59 +273,32 @@ document.addEventListener('DOMContentLoaded', function () {
   })
   const menuToggle = document.querySelector('.menu-toggle')
   const nav = document.querySelector('header nav')
+  const navContent = document.querySelector('.nav-content')
   const menuOverlay = document.querySelector('.menu-overlay')
-  const menuIcon = menuToggle.querySelector('i')
 
   function toggleMenu() {
     nav.classList.toggle('active')
-    menuOverlay.classList.toggle('active')
+    if (navContent) navContent.classList.toggle('active')
+    if (menuOverlay) menuOverlay.classList.toggle('active')
 
     const isOpen = nav.classList.contains('active')
-    menuIcon.classList.toggle('fa-bars', !isOpen)
-    menuIcon.classList.toggle('fa-xmark', isOpen)
     menuToggle.setAttribute('aria-expanded', isOpen)
   }
 
-  menuToggle.addEventListener('click', toggleMenu)
-  menuOverlay.addEventListener('click', toggleMenu)
+  if (menuToggle) {
+    menuToggle.addEventListener('click', toggleMenu)
+  }
+
+  if (menuOverlay) {
+    menuOverlay.addEventListener('click', toggleMenu)
+  }
 
   document.querySelectorAll('header nav a').forEach((link) => {
     link.addEventListener('click', () => {
       nav.classList.remove('active')
-      menuOverlay.classList.remove('active')
-      menuIcon.classList.remove('fa-xmark')
-      menuIcon.classList.add('fa-bars')
+      if (navContent) navContent.classList.remove('active')
+      if (menuOverlay) menuOverlay.classList.remove('active')
       menuToggle.setAttribute('aria-expanded', 'false')
     })
   })
-
-  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger)
-
-    // Animação de entrada do Hero
-    const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out' } })
-    heroTimeline
-      .from(
-        '#hero .hero-image-wrapper',
-        { opacity: 0, y: 30, duration: 1 },
-        '+=0.2',
-      )
-      .from('#hero h1', { opacity: 0, y: 30, duration: 0.8 }, '-=0.6')
-      .from('#hero p', { opacity: 0, y: 20, duration: 0.8 }, '-=0.4')
-      .from(
-        '#hero ul li',
-        { opacity: 0, y: 15, duration: 0.5, stagger: 0.1 },
-        '-=0.4',
-      )
-      .from('#hero .btns', { opacity: 0, y: 20, duration: 0.6 }, '-=0.3')
-
-    gsap.from('.projetos article', {
-      scrollTrigger: { trigger: '.projetos', start: 'top 75%' },
-      opacity: 0,
-      y: 50,
-      duration: 0.6,
-      stagger: 0.15,
-      ease: 'power2.out',
-    })
-  }
 })
