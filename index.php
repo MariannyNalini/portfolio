@@ -19,6 +19,17 @@ $t = include "lang/{$lang}.php";
             gtag('config', 'G-WJ5PXV8HSQ');
         </script>
         <meta charset="UTF-8">
+        <script>
+            window.i18n = {
+                lang: "<?php echo $lang; ?>",
+                ariaAbrirMenu: "<?php echo $t['aria_abrir_menu']; ?>",
+                ariaFecharMenu: "<?php echo $t['aria_fechar_menu']; ?>",
+                previewProject: "<?php echo $t['js_preview_project']; ?>",
+                viewProject: "<?php echo $t['js_view_project']; ?>",
+                loading: "<?php echo $t['js_loading']; ?>",
+                loadMore: "<?php echo $t['js_load_more']; ?>"
+            };
+        </script>
         <title><?php echo $t['meta_title']; ?></title>
         <meta name="description" content="<?php echo $t['meta_description']; ?>">
         <meta name="keywords" content="<?php echo $t['meta_keywords']; ?>">
@@ -71,13 +82,13 @@ $t = include "lang/{$lang}.php";
                     <span class="name">Marianny</span>
                     <span class="role"><?php echo $t['role']; ?></span>
                 </div>
-                <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="primary-menu">
+                <button class="menu-toggle" aria-label="<?php echo $t['aria_abrir_menu']; ?>" aria-expanded="false" aria-controls="primary-menu">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <nav>
                     <div class="nav-content" id="primary-menu">
                         <ul>
-                            <li><a href="#hero"><?php echo $t['nav_inicio']; ?></a></li>
+                            <li><a href="#inicio"><?php echo $t['nav_inicio']; ?></a></li>
                             <li><a href="#servicos"><?php echo $t['nav_servicos']; ?></a></li>
                             <li><a href="#projetos"><?php echo $t['nav_projetos']; ?></a></li>
                             <li><a href="#processo"><?php echo $t['nav_processo']; ?></a></li>
@@ -100,14 +111,14 @@ $t = include "lang/{$lang}.php";
             <section id="inicio">
                 <div class="container">
                     <div class="hero-image-wrapper">
-                        <picture class="hero-image-wrapper">
-                            <source srcset="assets/img/hero.avif" type="image/avif">
+                        <picture>
                             <source srcset="assets/img/hero.webp" type="image/webp">
+                            <source srcset="assets/img/hero.avif" type="image/avif">
                             <img 
                                 src="assets/img/hero.png" 
-                                alt="Mockup de dispositivos exibindo projetos digitais"
-                                width="600" 
-                                height="400"
+                                alt="<?php echo $t['alt_hero']; ?>"
+                                width="1000" 
+                                height="617"
                                 fetchpriority="high"
                                 decoding="async">
                         </picture>
@@ -432,10 +443,10 @@ $t = include "lang/{$lang}.php";
                     </div>
                     <div>
                         <form action="envia.php" method="POST" novalidate>
-                            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                             <div>
                                 <label for="nome"><?php echo $t['form_nome']; ?></label>
                                 <input type="text" id="nome" name="nome" placeholder="<?php echo $t['form_nome_ph']; ?>" required>
+                                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                             </div>
                             <div>
                                 <label for="email"><?php echo $t['form_email']; ?></label>
@@ -517,7 +528,7 @@ $t = include "lang/{$lang}.php";
                             </div>
 
                             <div style="display:none;">
-                                <label>Não preencha este campo se for humano:</label>
+                                <label><?php echo $t['honeypot_label']; ?></label>
                                 <input type="text" name="website_trap" value="">
                             </div>
                             <button type="submit" class="btn btn-primary"><?php echo $t['form_submit']; ?></button>

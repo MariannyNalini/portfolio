@@ -306,6 +306,7 @@ nav a:hover {
 .nav-btn-container {
   width: 100%;
   text-align: center;
+  margin: 24px 0;
 }
 
 .menu-overlay {
@@ -603,6 +604,14 @@ nav a:hover {
   font-family: 'Font Awesome 6 Free';
   font-weight: 900;
   margin-left: 10px;
+}
+
+.projetos .project-atuacao {
+  border-left: 2px solid var(--color-primary);
+  color: #443a51;
+  line-height: 1.45;
+  padding-left: 9px;
+  margin-bottom: 16px;
 }
 
 .projetos .tech-list {
@@ -1077,7 +1086,7 @@ footer p {
 
   .nav-btn-container {
     width: auto;
-    margin-top: 0;
+    margin: 0;
   }
 
   .nav-btn-container .btn {

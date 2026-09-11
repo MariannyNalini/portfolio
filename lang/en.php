@@ -126,5 +126,15 @@ return [
     // Modal
     'modal_titulo' => 'Message sent!',
     'modal_desc' => 'Thanks for getting in touch. I will reply soon.',
-    'modal_fechar' => 'Close'
+    'modal_fechar' => 'Close',
+
+    // Accessibility, Image & JavaScript Keys (i18n)
+    'alt_hero'          => 'Device mockup displaying digital projects',
+    'aria_abrir_menu'   => 'Open menu',
+    'aria_fechar_menu'  => 'Close menu',
+    'honeypot_label'    => 'Do not fill this field if you are human:',
+    'js_preview_project' => 'Preview of',
+    'js_view_project'    => 'View project',
+    'js_loading'         => 'Loading...',
+    'js_load_more'       => 'Load more projects',
 ];

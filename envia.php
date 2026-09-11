@@ -60,21 +60,18 @@ carregarEnv(__DIR__ . '/.env');
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     header('Content-Type: application/json; charset=utf-8');
 
-    // 1. Honeypot check (silencioso para bots)
     if (!empty($_POST['website_trap'])) {
         http_response_code(200);
         echo json_encode(['success' => true]);
         exit;
     }
 
-    // 2. Validação Token CSRF
     if (empty($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
         http_response_code(403);
-        echo json_encode(['error' => 'Falha na validação de segurança (CSRF invalid). Recarregue a página e tente novamente.']);
+        echo json_encode(['error' => 'Falha na validação de segurança. Recarregue a página e tente novamente.']);
         exit;
     }
 
-    // 3. Rate Limiting por Sessão (trava requisições em menos de 30 segundos)
     $now = time();
     if (isset($_SESSION['last_submit']) && ($now - $_SESSION['last_submit']) < 30) {
         http_response_code(429);
@@ -82,12 +79,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
 
-    // 4. Sanitização e limites de tamanho (truncagem)
     $nome = mb_substr(trim(strip_tags($_POST["nome"] ?? '')), 0, 100);
     $email = filter_var(trim($_POST["email"] ?? ''), FILTER_VALIDATE_EMAIL);
     $mensagem = mb_substr(trim(strip_tags($_POST["mensagem"] ?? '')), 0, 2000);
 
-    // 5. Whitelist de valores aceitos para os selects
     $allowed_tipos = ['wordpress', 'landing_page', 'email_html', 'performance'];
     $allowed_prazos = ['urgente', 'curto_prazo', 'medio_prazo'];
     $allowed_layouts = ['aprovado', 'em_desenvolvimento', 'nao', 'implementacao'];
@@ -103,7 +98,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $possui_layout = in_array($raw_layout, $allowed_layouts, true) ? $raw_layout : null;
     $tipo_contrato = in_array($raw_contrato, $allowed_contratos, true) ? $raw_contrato : null;
 
-    // 6. Validação dos campos
     $erros = [];
 
     if (empty($nome)) { $erros[] = "O campo nome é obrigatório."; }
@@ -120,9 +114,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
 
-    // Marca horário do envio bem-sucedido nas validações
-    $_SESSION['last_submit'] = time();
-
     $smtpUser = $_ENV['SMTP_USER'] ?? getenv('SMTP_USER') ?: '';
     $smtpPass = $_ENV['SMTP_PASS'] ?? getenv('SMTP_PASS') ?: '';
     $mailTo = $_ENV['MAIL_TO'] ?? getenv('MAIL_TO') ?: '';
@@ -132,6 +123,40 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode(['error' => 'Erro de configuração: Credenciais de e-mail ausentes no servidor.']);
         exit;
     }
+
+    $mapa_tipos = [
+        'wordpress' => 'WordPress',
+        'landing_page' => 'Landing Page',
+        'email_html' => 'Email HTML',
+        'performance' => 'Performance'
+    ];
+
+    $mapa_prazos = [
+        'urgente' => 'Urgente',
+        'curto_prazo' => 'Até 2 semanas',
+        'medio_prazo' => '1 mês ou mais'
+    ];
+
+    $mapa_layouts = [
+        'aprovado' => 'Sim, está aprovado',
+        'em_desenvolvimento' => 'Sim, mas ainda está em desenvolvimento',
+        'nao' => 'Não',
+        'implementacao' => 'Preciso apenas da implementação técnica'
+    ];
+
+    $mapa_contratos = [
+        'fechado' => 'Projeto fechado',
+        'pontual' => 'Demanda pontual',
+        'recorrente' => 'Suporte recorrente',
+        'equipe' => 'Extensão de equipe',
+        'white_label' => 'White-label',
+        'oportunidade' => 'Oportunidade profissional'
+    ];
+
+    $label_tipo = $mapa_tipos[$tipo_projeto] ?? $tipo_projeto;
+    $label_prazo = $mapa_prazos[$prazo_desejado] ?? $prazo_desejado;
+    $label_layout = $mapa_layouts[$possui_layout] ?? $possui_layout;
+    $label_contrato = $mapa_contratos[$tipo_contrato] ?? $tipo_contrato;
 
     $mail = new PHPMailer(true);
 
@@ -150,17 +175,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $mail->addReplyTo($email, $nome);
 
         $mail->isHTML(true);
-        $mail->Subject = "Novo Projeto: " . htmlspecialchars($tipo_projeto);
+        $mail->Subject = "Novo Projeto: " . htmlspecialchars($label_tipo);
         $mail->Body    = "<h3>Novo contato recebido pelo portfólio</h3>" .
                          "<p><strong>Nome:</strong> " . htmlspecialchars($nome) . "</p>" .
                          "<p><strong>E-mail:</strong> " . htmlspecialchars($email) . "</p>" .
-                         "<p><strong>Tipo de Projeto:</strong> " . htmlspecialchars($tipo_projeto) . "</p>" .
-                         "<p><strong>Prazo Desejado:</strong> " . htmlspecialchars($prazo_desejado) . "</p>" .
-                         "<p><strong>Possui layout?:</strong> " . htmlspecialchars($possui_layout) . "</p>" .
-                         "<p><strong>Tipo de Contrato:</strong> " . htmlspecialchars($tipo_contrato) . "</p>" .
+                         "<p><strong>Tipo de Projeto:</strong> " . htmlspecialchars($label_tipo) . "</p>" .
+                         "<p><strong>Prazo Desejado:</strong> " . htmlspecialchars($label_prazo) . "</p>" .
+                         "<p><strong>Possui layout?:</strong> " . htmlspecialchars($label_layout) . "</p>" .
+                         "<p><strong>Tipo de Contrato:</strong> " . htmlspecialchars($label_contrato) . "</p>" .
                          "<p><strong>Mensagem:</strong><br>" . nl2br(htmlspecialchars($mensagem)) . "</p>";
 
         $mail->send();
+
+        $_SESSION['last_submit'] = time();
         
         http_response_code(200);
         echo json_encode(['success' => true, 'message' => 'Sucesso']);

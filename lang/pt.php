@@ -127,5 +127,15 @@ return [
     // Modal
     'modal_titulo' => 'Mensagem enviada!',
     'modal_desc' => 'Obrigado pelo contato. Retornarei em breve.',
-    'modal_fechar' => 'Fechar'
+    'modal_fechar' => 'Fechar',
+
+    // Chaves de Acessibilidade, Imagens e JavaScript (i18n)
+    'alt_hero'          => 'Mockup de dispositivos exibindo projetos digitais',
+    'aria_abrir_menu'   => 'Abrir menu',
+    'aria_fechar_menu'  => 'Fechar menu',
+    'honeypot_label'    => 'Não preencha este campo se for humano:',
+    'js_preview_project' => 'Prévia do projeto',
+    'js_view_project'    => 'Ver projeto',
+    'js_loading'         => 'Carregando...',
+    'js_load_more'       => 'Ver mais projetos',
 ];

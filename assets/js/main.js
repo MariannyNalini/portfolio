@@ -15,7 +15,9 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch((error) => console.error('Erro ao carregar os projetos:', error))
 
   function renderProjects() {
-    const currentLang = document.body.getAttribute('data-lang') || 'pt'
+    const currentLang = window.i18n
+      ? window.i18n.lang
+      : document.body.getAttribute('data-lang') || 'pt'
     const nextIndex = currentIndex + itemsPerPage
     const slice = allProjects.slice(currentIndex, nextIndex)
 
@@ -24,10 +26,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
       const img = document.createElement('img')
       img.src = project.imagem
-      img.alt =
-        currentLang === 'pt'
-          ? `Prévia do projeto ${project[`titulo_${currentLang}`]}`
-          : `Preview of ${project[`titulo_${currentLang}`]}`
+      img.alt = window.i18n
+        ? `${window.i18n.previewProject} ${project[`titulo_${currentLang}`]}`
+        : currentLang === 'pt'
+          ? `Prévia do projeto ${project.titulo_pt}`
+          : `Preview of ${project.titulo_en}`
       img.loading = 'lazy'
       img.decoding = 'async'
 
@@ -38,14 +41,34 @@ document.addEventListener('DOMContentLoaded', function () {
       const catSpan = document.createElement('span')
       catSpan.textContent = project[`categoria_${currentLang}`]
       catDiv.appendChild(catSpan)
+      content.appendChild(catDiv)
 
-      const textDiv = document.createElement('div')
+      const titleDiv = document.createElement('div')
       const h3 = document.createElement('h3')
       h3.textContent = project[`titulo_${currentLang}`]
+      titleDiv.appendChild(h3)
+      content.appendChild(titleDiv)
+
+      const descDiv = document.createElement('div')
+      const atuacaoP = document.createElement('p')
+      atuacaoP.className = 'project-atuacao'
+
+      const strongTag = document.createElement('strong')
+      strongTag.textContent = currentLang === 'pt' ? 'Atuação: ' : 'Role: '
+
+      const atuacaoText = document.createTextNode(
+        project[`atuacao_${currentLang}`],
+      )
+
+      atuacaoP.appendChild(strongTag)
+      atuacaoP.appendChild(atuacaoText)
+
       const p = document.createElement('p')
       p.textContent = project[`descricao_${currentLang}`]
-      textDiv.appendChild(h3)
-      textDiv.appendChild(p)
+
+      descDiv.appendChild(atuacaoP)
+      descDiv.appendChild(p)
+      content.appendChild(descDiv)
 
       let techUl = null
       if (project.tech && project.tech.length) {
@@ -56,22 +79,22 @@ document.addEventListener('DOMContentLoaded', function () {
           li.textContent = tech
           techUl.appendChild(li)
         })
+        content.appendChild(techUl)
       }
 
       const a = document.createElement('a')
       a.href = project.link
       a.target = '_blank'
       a.rel = 'noopener noreferrer'
-      a.textContent = currentLang === 'pt' ? 'Ver projeto' : 'View project'
-
-      content.appendChild(catDiv)
-      content.appendChild(textDiv)
-      if (techUl) content.appendChild(techUl)
+      a.textContent = window.i18n
+        ? window.i18n.viewProject
+        : currentLang === 'pt'
+          ? 'Ver projeto'
+          : 'View project'
       content.appendChild(a)
 
       article.appendChild(img)
       article.appendChild(content)
-
       grid.appendChild(article)
     })
 
@@ -83,13 +106,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   loadMoreBtn.addEventListener('click', function (e) {
     e.preventDefault()
-    loadMoreBtn.textContent = 'Carregando...'
+    loadMoreBtn.textContent = window.i18n
+      ? window.i18n.loading
+      : 'Carregando...'
     loadMoreBtn.disabled = true
 
     setTimeout(() => {
       renderProjects()
       if (currentIndex < allProjects.length) {
-        loadMoreBtn.textContent = 'Ver mais projetos'
+        loadMoreBtn.textContent = window.i18n
+          ? window.i18n.loadMore
+          : 'Ver mais projetos'
         loadMoreBtn.disabled = false
       }
     }, 500)
@@ -104,10 +131,11 @@ document.addEventListener('DOMContentLoaded', function () {
       header.classList.remove('scrolled')
     }
   })
+
   const form = document.querySelector('form')
   const modal = document.querySelector('#modal-sucesso')
   const fecharModal = document.querySelector('#fechar-modal')
-  const submitBtn = form.querySelector('button[type="submit"]')
+  const submitBtn = form ? form.querySelector('button[type="submit"]') : null
 
   function abrirModal() {
     modal.classList.add('ativo')
@@ -119,16 +147,20 @@ document.addEventListener('DOMContentLoaded', function () {
     if (submitBtn) submitBtn.focus()
   }
 
-  fecharModal.addEventListener('click', fecharModalFunc)
+  if (fecharModal) {
+    fecharModal.addEventListener('click', fecharModalFunc)
+  }
 
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      fecharModalFunc()
-    }
-  })
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        fecharModalFunc()
+      }
+    })
+  }
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('ativo')) {
+    if (e.key === 'Escape' && modal && modal.classList.contains('ativo')) {
       fecharModalFunc()
     }
   })
@@ -176,102 +208,112 @@ document.addEventListener('DOMContentLoaded', function () {
   const contrato = document.querySelector('#tipo_contrato')
   const mensagem = document.querySelector('#mensagem')
 
-  nome.addEventListener('input', () => {
-    if (nome.value.trim()) clearError(nome)
-  })
+  if (nome) {
+    nome.addEventListener('input', () => {
+      if (nome.value.trim()) clearError(nome)
+    })
+  }
 
-  email.addEventListener('input', () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (emailRegex.test(email.value.trim())) clearError(email)
-  })
+  if (email) {
+    email.addEventListener('input', () => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (emailRegex.test(email.value.trim())) clearError(email)
+    })
+  }
 
-  mensagem.addEventListener('input', () => {
-    if (mensagem.value.trim()) clearError(mensagem)
-  })
+  if (mensagem) {
+    mensagem.addEventListener('input', () => {
+      if (mensagem.value.trim()) clearError(mensagem)
+    })
+  }
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault()
-    let isValid = true
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      let isValid = true
 
-    if (!nome.value.trim()) {
-      showError(nome, 'Por favor, insira seu nome.')
-      isValid = false
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!email.value.trim()) {
-      showError(email, 'O campo e-mail é obrigatório.')
-      isValid = false
-    } else if (!emailRegex.test(email.value.trim())) {
-      showError(email, 'Por favor, insira um e-mail válido.')
-      isValid = false
-    }
-
-    if (!tipoProjeto.value) {
-      showError(tipoProjeto, 'Selecione o tipo de projeto.')
-      isValid = false
-    }
-
-    if (!prazo.value) {
-      showError(prazo, 'Selecione o prazo desejado.')
-      isValid = false
-    }
-
-    if (!layout.value) {
-      showError(layout, 'Selecione a opção.')
-      isValid = false
-    }
-
-    if (!contrato.value) {
-      showError(contrato, 'Selecione a opção.')
-      isValid = false
-    }
-
-    if (!mensagem.value.trim()) {
-      showError(mensagem, 'Escreva uma breve mensagem sobre o projeto.')
-      isValid = false
-    }
-
-    if (!isValid) return
-    const submitBtn = form.querySelector('button[type="submit"]')
-    const originalText = submitBtn ? submitBtn.textContent : 'Enviar'
-    if (submitBtn) {
-      submitBtn.textContent = 'Enviando mensagem...'
-      submitBtn.disabled = true
-      submitBtn.style.opacity = '0.7'
-    }
-
-    const formData = new FormData(form)
-
-    try {
-      const response = await fetch('envia.php', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (response.ok) {
-        abrirModal()
-        form.reset()
-        document
-          .querySelectorAll('.custom-select-wrapper')
-          .forEach((wrapper) => {
-            const span = wrapper.querySelector('.select-trigger span')
-            span.textContent = 'Selecione'
-            span.style.color = '#1f2937'
-          })
-      } else {
-        alert('Ocorreu um erro ao enviar. Tente novamente.')
+      if (!nome.value.trim()) {
+        showError(nome, 'Por favor, insira seu nome.')
+        isValid = false
       }
-    } catch (error) {
-      alert('Erro de conexão com o servidor.')
-    } finally {
-      if (submitBtn) {
-        submitBtn.textContent = originalText
-        submitBtn.disabled = false
-        submitBtn.style.opacity = '1'
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!email.value.trim()) {
+        showError(email, 'O campo e-mail é obrigatório.')
+        isValid = false
+      } else if (!emailRegex.test(email.value.trim())) {
+        showError(email, 'Por favor, insira um e-mail válido.')
+        isValid = false
       }
-    }
-  })
+
+      if (!tipoProjeto.value) {
+        showError(tipoProjeto, 'Selecione o tipo de projeto.')
+        isValid = false
+      }
+
+      if (!prazo.value) {
+        showError(prazo, 'Selecione o prazo desejado.')
+        isValid = false
+      }
+
+      if (!layout.value) {
+        showError(layout, 'Selecione a opção.')
+        isValid = false
+      }
+
+      if (!contrato.value) {
+        showError(contrato, 'Selecione a opção.')
+        isValid = false
+      }
+
+      if (!mensagem.value.trim()) {
+        showError(mensagem, 'Escreva uma breve mensagem sobre o projeto.')
+        isValid = false
+      }
+
+      if (!isValid) return
+      const submitBtnForm = form.querySelector('button[type="submit"]')
+      const originalText = submitBtnForm ? submitBtnForm.textContent : 'Enviar'
+      if (submitBtnForm) {
+        submitBtnForm.textContent = 'Enviando mensagem...'
+        submitBtnForm.disabled = true
+        submitBtnForm.style.opacity = '0.7'
+      }
+
+      const formData = new FormData(form)
+
+      try {
+        const response = await fetch('envia.php', {
+          method: 'POST',
+          body: formData,
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+          abrirModal()
+          form.reset()
+          document
+            .querySelectorAll('.custom-select-wrapper')
+            .forEach((wrapper) => {
+              const span = wrapper.querySelector('.select-trigger span')
+              span.textContent = 'Selecione'
+              span.style.color = '#1f2937'
+            })
+        } else {
+          alert(data.error || 'Ocorreu um erro ao enviar. Tente novamente.')
+        }
+      } catch (error) {
+        alert('Erro de conexão com o servidor.')
+      } finally {
+        if (submitBtnForm) {
+          submitBtnForm.textContent = originalText
+          submitBtnForm.disabled = false
+          submitBtnForm.style.opacity = '1'
+        }
+      }
+    })
+  }
 
   document.querySelectorAll('.custom-option').forEach((option) => {
     option.addEventListener('click', () => {
@@ -282,6 +324,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     })
   })
+
   document.querySelectorAll('.custom-select-wrapper').forEach((wrapper) => {
     const trigger = wrapper.querySelector('.select-trigger')
     const options = wrapper.querySelectorAll('.custom-option')
@@ -320,6 +363,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     })
   })
+
   const menuToggle = document.querySelector('.menu-toggle')
   const nav = document.querySelector('header nav')
   const navContent = document.querySelector('.nav-content')
@@ -331,7 +375,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (menuOverlay) menuOverlay.classList.toggle('active')
 
     menuToggle.setAttribute('aria-expanded', isOpen)
-    menuToggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu')
+    if (window.i18n) {
+      menuToggle.setAttribute(
+        'aria-label',
+        isOpen ? window.i18n.ariaFecharMenu : window.i18n.ariaAbrirMenu,
+      )
+    }
 
     const icon = menuToggle.querySelector('i')
     if (icon) {
@@ -346,8 +395,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (menuOverlay) {
     menuOverlay.addEventListener('click', toggleMenu)
   }
+
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && nav.classList.contains('active')) {
+    if (e.key === 'Escape' && nav && nav.classList.contains('active')) {
       toggleMenu()
       menuToggle.focus()
     }
@@ -355,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.querySelectorAll('header nav a').forEach((link) => {
     link.addEventListener('click', () => {
-      if (nav.classList.contains('active')) {
+      if (nav && nav.classList.contains('active')) {
         toggleMenu()
       }
     })
