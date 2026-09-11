@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -12,7 +14,8 @@ $phpmailerFiles = [
 foreach ($phpmailerFiles as $file) {
     if (!file_exists($file)) {
         http_response_code(500);
-        echo "Erro crítico: O arquivo $file não foi encontrado. Confira se a pasta no servidor se chama exatamente 'phpmailer' em minúsculas.";
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['error' => "Erro crítico: O arquivo $file não foi encontrado."]);
         exit;
     }
     require $file;
@@ -55,36 +58,70 @@ function carregarEnv($caminho) {
 carregarEnv(__DIR__ . '/.env');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    header('Content-Type: application/json; charset=utf-8');
 
+    // 1. Honeypot check (silencioso para bots)
     if (!empty($_POST['website_trap'])) {
+        http_response_code(200);
+        echo json_encode(['success' => true]);
         exit;
     }
 
-    $nome = trim(strip_tags($_POST["nome"] ?? ''));
-    $email = filter_var(trim($_POST["email"] ?? ''), FILTER_SANITIZE_EMAIL);
-    $tipo_projeto = trim(strip_tags($_POST["tipo_projeto"] ?? ''));
-    $prazo_desejado = trim(strip_tags($_POST["prazo_desejado"] ?? ''));
-    $possui_layout = trim(strip_tags($_POST["possui_layout"] ?? ''));
-    $tipo_contrato = trim(strip_tags($_POST["tipo_contrato"] ?? ''));
-    $mensagem = trim(strip_tags($_POST["mensagem"] ?? ''));
+    // 2. Validação Token CSRF
+    if (empty($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        http_response_code(403);
+        echo json_encode(['error' => 'Falha na validação de segurança (CSRF invalid). Recarregue a página e tente novamente.']);
+        exit;
+    }
 
+    // 3. Rate Limiting por Sessão (trava requisições em menos de 30 segundos)
+    $now = time();
+    if (isset($_SESSION['last_submit']) && ($now - $_SESSION['last_submit']) < 30) {
+        http_response_code(429);
+        echo json_encode(['error' => 'Muitas tentativas em pouco tempo. Aguarde alguns segundos antes de enviar novamente.']);
+        exit;
+    }
+
+    // 4. Sanitização e limites de tamanho (truncagem)
+    $nome = mb_substr(trim(strip_tags($_POST["nome"] ?? '')), 0, 100);
+    $email = filter_var(trim($_POST["email"] ?? ''), FILTER_VALIDATE_EMAIL);
+    $mensagem = mb_substr(trim(strip_tags($_POST["mensagem"] ?? '')), 0, 2000);
+
+    // 5. Whitelist de valores aceitos para os selects
+    $allowed_tipos = ['wordpress', 'landing_page', 'email_html', 'performance'];
+    $allowed_prazos = ['urgente', 'curto_prazo', 'medio_prazo'];
+    $allowed_layouts = ['aprovado', 'em_desenvolvimento', 'nao', 'implementacao'];
+    $allowed_contratos = ['fechado', 'pontual', 'recorrente', 'equipe', 'white_label', 'oportunidade'];
+
+    $raw_tipo = trim($_POST["tipo_projeto"] ?? '');
+    $raw_prazo = trim($_POST["prazo_desejado"] ?? '');
+    $raw_layout = trim($_POST["possui_layout"] ?? '');
+    $raw_contrato = trim($_POST["tipo_contrato"] ?? '');
+
+    $tipo_projeto = in_array($raw_tipo, $allowed_tipos, true) ? $raw_tipo : null;
+    $prazo_desejado = in_array($raw_prazo, $allowed_prazos, true) ? $raw_prazo : null;
+    $possui_layout = in_array($raw_layout, $allowed_layouts, true) ? $raw_layout : null;
+    $tipo_contrato = in_array($raw_contrato, $allowed_contratos, true) ? $raw_contrato : null;
+
+    // 6. Validação dos campos
     $erros = [];
 
     if (empty($nome)) { $erros[] = "O campo nome é obrigatório."; }
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { $erros[] = "O e-mail informado é inválido."; }
-    if (empty($tipo_projeto)) { $erros[] = "Selecione um tipo de projeto válido."; }
-    if (empty($prazo_desejado)) { $erros[] = "Selecione o prazo desejado."; }
-    if (empty($possui_layout)) { $erros[] = "Selecione a opção."; }
-    if (empty($tipo_contrato)) { $erros[] = "Selecione a opção."; }
+    if (!$email) { $erros[] = "O e-mail informado é inválido."; }
+    if (!$tipo_projeto) { $erros[] = "Selecione um tipo de projeto válido."; }
+    if (!$prazo_desejado) { $erros[] = "Selecione o prazo desejado."; }
+    if (!$possui_layout) { $erros[] = "Selecione a opção de layout."; }
+    if (!$tipo_contrato) { $erros[] = "Selecione o tipo de contrato."; }
     if (empty($mensagem)) { $erros[] = "A mensagem não pode estar vazia."; }
 
     if (!empty($erros)) {
-        foreach ($erros as $erro) {
-            echo "<p style='color: #ef4444; font-family: sans-serif; margin-bottom: 8px;'>$erro</p>";
-        }
-        echo "<br><a href='javascript:history.back()' style='font-family: sans-serif; color: #7c3aed;'>← Voltar</a>";
+        http_response_code(400);
+        echo json_encode(['error' => implode(' ', $erros)]);
         exit;
     }
+
+    // Marca horário do envio bem-sucedido nas validações
+    $_SESSION['last_submit'] = time();
 
     $smtpUser = $_ENV['SMTP_USER'] ?? getenv('SMTP_USER') ?: '';
     $smtpPass = $_ENV['SMTP_PASS'] ?? getenv('SMTP_PASS') ?: '';
@@ -92,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($smtpUser) || empty($smtpPass)) {
         http_response_code(500);
-        echo "Erro de configuração: As credenciais do .env não foram lidas corretamente.";
+        echo json_encode(['error' => 'Erro de configuração: Credenciais de e-mail ausentes no servidor.']);
         exit;
     }
 
@@ -109,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $mail->CharSet    = 'UTF-8';
 
         $mail->setFrom($smtpUser, 'Site - Contato (' . $nome . ')');
-        $mail->addAddress($mailTo, 'Marianny');
+        $mail->addAddress($mailTo ?: $smtpUser, 'Marianny');
         $mail->addReplyTo($email, $nome);
 
         $mail->isHTML(true);
@@ -119,23 +156,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                          "<p><strong>E-mail:</strong> " . htmlspecialchars($email) . "</p>" .
                          "<p><strong>Tipo de Projeto:</strong> " . htmlspecialchars($tipo_projeto) . "</p>" .
                          "<p><strong>Prazo Desejado:</strong> " . htmlspecialchars($prazo_desejado) . "</p>" .
-                         "<p><strong>Você já possui o layout/design?:</strong> " . htmlspecialchars($possui_layout) . "</p>" .
-                         "<p><strong>Como você está buscando contratar?:</strong> " . htmlspecialchars($tipo_contrato) . "</p>" .
+                         "<p><strong>Possui layout?:</strong> " . htmlspecialchars($possui_layout) . "</p>" .
+                         "<p><strong>Tipo de Contrato:</strong> " . htmlspecialchars($tipo_contrato) . "</p>" .
                          "<p><strong>Mensagem:</strong><br>" . nl2br(htmlspecialchars($mensagem)) . "</p>";
 
         $mail->send();
         
         http_response_code(200);
-        echo "Sucesso";
+        echo json_encode(['success' => true, 'message' => 'Sucesso']);
         exit;
 
     } catch (Exception $e) {
         error_log("Erro no PHPMailer: {$mail->ErrorInfo}");
         http_response_code(500);
-        echo "Não foi possível enviar a mensagem no momento. Tente novamente mais tarde.";
+        echo json_encode(['error' => 'Não foi possível enviar a mensagem no momento. Tente novamente mais tarde.']);
+        exit;
     }
 } else {
     header("Location: index.php");
     exit;
 }
-?>

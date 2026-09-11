@@ -25,7 +25,7 @@ return [
 
     // Servicos
     'servicos_sub' => 'O QUE EU FAÇO',
-    'servicos_head' => 'Soluções técnicas para tirar seu projeto do papel',
+    'servicos_head' => 'Implementação para projetos que precisam chegar à produção',
     'srv_1_title' => 'WordPress',
     'srv_1_desc' => 'Desenvolvimento e implementação de sites em WordPress, com personalização de temas, componentes, funcionalidades e integrações conforme a necessidade do projeto.',
     'srv_2_title' => 'Landing Pages',
@@ -37,14 +37,14 @@ return [
     'btn_saber_mais' => 'Falar sobre este projeto',
 
     // Para Quem
-    'para_quem_sub' => 'PARA QUEM É',
+    'para_quem_sub' => 'Quando faz sentido trabalhar comigo',
     'para_quem_head' => 'Atendo empresas, profissionais e agências',
-    'pq_1_title' => 'Agências de marketing e lançamentos',
-    'pq_1_desc' => 'Suporte técnico para aumentar a capacidade de entrega sem precisar contratar.',
-    'pq_2_title' => 'Profissionais e infoprodutores',
-    'pq_2_desc' => 'Páginas e estruturas técnicas que transmitem profissionalismo e geram mais resultados.',
-    'pq_3_title' => 'Negócios locais e empresas',
-    'pq_3_desc' => 'Sites rápidos, modernos e otimizados para atrair clientes e gerar confiança.',
+    'pq_1_title' => 'Você já tem layout e precisa de implementação.',
+    'pq_1_desc' => 'Você tem o layout aprovado e precisa transformá-lo em código limpo, responsivo e fiel ao design.',
+    'pq_2_title' => 'Sua agência precisa ampliar a capacidade de entrega.',
+    'pq_2_desc' => 'Sua agência precisa de reforço técnico sob demanda para absorver novos projetos, cumprir prazos e acelerar entregas.',
+    'pq_3_title' => 'Seu site precisa de ajustes, performance ou integrações.',
+    'pq_3_desc' => 'Seu site já existe, mas precisa de otimização de carregamento, correções, tagueamento ou novas funcionalidades.',
 
     // Processo
     'como_trabalho_sub' => 'COMO TRABALHO',
@@ -59,8 +59,8 @@ return [
     'passo_4_desc' => 'Finalizo os ajustes, preparo os arquivos e entrego o projeto pronto para publicação.',
 
     // Seção Projetos JSON
-    'projetos_sub' => 'PROJETOS',
-    'projetos_head' => 'Alguns projetos desenvolvidos',
+    'projetos_sub' => 'PROJETOS SELECIONADOS',
+    'projetos_head' => 'Implementações com contexto técnico',
     'btn_load_more' => 'Ver mais projetos',
 
     // Para Agências
@@ -74,15 +74,12 @@ return [
     // Ajuda se...
     'ajuda_sub' => 'EU POSSO TE AJUDAR SE...',
     'ajuda_head' => 'Seu projeto está travado por algum problema técnico?',
-    'ajuda_1' => 'Meu site em WordPress está lento.',
-    'ajuda_2' => 'Meu site não fica bom no mobile.',
-    'ajuda_3' => 'Minha agência está sobrecarregada.',
-    'ajuda_4' => 'Preciso de uma Landing Page rápida.',
-    'ajuda_5' => 'O PageSpeed está muito baixo.',
-    'ajuda_6' => 'Tive um erro e não sei como resolver.',
-    'ajuda_7' => 'Tenho o layout do email, mas preciso codificar.',
-    'ajuda_8' => 'Preciso de ajustes ou integrações no meu site.',
-    'ajuda_9' => 'Quero migrar meu site.',
+    'ajuda_1' => 'Meu site em WordPress está lento',
+    'ajuda_2' => 'Meu site não fica bom no mobile',
+    'ajuda_3' => 'Minha agência está sobrecarregada',
+    'ajuda_4' => 'Preciso implementar uma Landing Page a partir de um layout aprovado',
+    'ajuda_5' => 'O PageSpeed está muito baixo',
+    'ajuda_6' => 'Preciso de ajustes ou integrações no meu site',
 
     // Contato
     'contato_head' => 'Vamos transformar seu layout em código?',
@@ -120,7 +117,7 @@ return [
     'form_submit' => 'Enviar projeto',
 
     // Footer
-    'footer_desc' => 'Desenvolvimento técnico para projetos digitais que precisam sair do papel com qualidade e performance.',
+    'footer_desc' => 'Front-End, WordPress e otimização para experiências digitais responsivas, acessíveis e prontas para publicação.<br><br>Também estou aberta a oportunidades Front-End em equipes de produto e tecnologia.',
     'footer_navegacao' => 'Navegação',
     'footer_servicos' => 'Serviços',
     'footer_servico_5' => 'Correções Técnicas',

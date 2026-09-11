@@ -1,4 +1,8 @@
 <?php
+session_start();
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 $lang = ($_GET['lang'] ?? 'pt') === 'en' ? 'en' : 'pt';
 $t = include "lang/{$lang}.php";
 ?>
@@ -25,6 +29,15 @@ $t = include "lang/{$lang}.php";
         <link rel="alternate" hreflang="en" href="https://mariannynalini.com.br/?lang=en">
         <link rel="alternate" hreflang="x-default" href="https://mariannynalini.com.br/">
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Inter:wght@300;400;500;600;700&display=swap">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+        <noscript>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Inter:wght@300;400;500;600;700&display=swap">
+        </noscript>
+
         <meta property="og:title" content="<?php echo $t['meta_title']; ?>">
         <meta property="og:description" content="<?php echo $t['meta_description']; ?>">
         <meta property="og:image" content="https://mariannynalini.com.br/assets/img/hero.png">
@@ -42,7 +55,7 @@ $t = include "lang/{$lang}.php";
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="assets/css/style.css?v=2">
+        <link rel="stylesheet" href="assets/css/style.css?v=<?php echo filemtime('assets/css/style.css'); ?>">
         <link rel="icon" type="image/png" href="assets/img/favicon/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="assets/img/favicon/favicon.svg" />
         <link rel="shortcut icon" href="assets/img/favicon/favicon.ico" />
@@ -58,19 +71,13 @@ $t = include "lang/{$lang}.php";
                     <span class="name">Marianny</span>
                     <span class="role"><?php echo $t['role']; ?></span>
                 </div>
-                <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+                <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="primary-menu">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <nav>
-                    <button class="menu-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Abrir menu">
-                        <span class="hamburger-line"></span>
-                        <span class="hamburger-line"></span>
-                        <span class="hamburger-line"></span>
-                    </button>
-
                     <div class="nav-content" id="primary-menu">
                         <ul>
-                            <li><a href="#inicio"><?php echo $t['nav_inicio']; ?></a></li>
+                            <li><a href="#hero"><?php echo $t['nav_inicio']; ?></a></li>
                             <li><a href="#servicos"><?php echo $t['nav_servicos']; ?></a></li>
                             <li><a href="#projetos"><?php echo $t['nav_projetos']; ?></a></li>
                             <li><a href="#processo"><?php echo $t['nav_processo']; ?></a></li>
@@ -93,7 +100,17 @@ $t = include "lang/{$lang}.php";
             <section id="inicio">
                 <div class="container">
                     <div class="hero-image-wrapper">
-                        <img src="assets/img/hero.png" alt="Mockup de dispositivos exibindo projetos digitais">
+                        <picture class="hero-image-wrapper">
+                            <source srcset="assets/img/hero.avif" type="image/avif">
+                            <source srcset="assets/img/hero.webp" type="image/webp">
+                            <img 
+                                src="assets/img/hero.png" 
+                                alt="Mockup de dispositivos exibindo projetos digitais"
+                                width="600" 
+                                height="400"
+                                fetchpriority="high"
+                                decoding="async">
+                        </picture>
                     </div>
                     <div>
                         <div class="content">
@@ -140,7 +157,7 @@ $t = include "lang/{$lang}.php";
 
             <section id="servicos">
                 <div class="container">
-                    <h3 class="subheading"><?php echo $t['servicos_sub']; ?></h3>
+                    <span class="subheading"><?php echo $t['servicos_sub']; ?></span>
                     <h2 class="heading"><?php echo $t['servicos_head']; ?></h2>
                     <div class="grid">
                         <article>
@@ -189,13 +206,13 @@ $t = include "lang/{$lang}.php";
 
             <section id="para-quem">
                 <div class="container">
-                    <h3 class="subheading"><?php echo $t['para_quem_sub']; ?></h3>
+                    <span class="subheading"><?php echo $t['para_quem_sub']; ?></span>
                     <h2 class="heading"><?php echo $t['para_quem_head']; ?></h2>
                     <div class="grid">
                         <article>
                             <div>
                                 <div class="icon">
-                                    <i class="fa-solid fa-rocket"></i>
+                                    <i class="fa-solid fa-laptop-code"></i>
                                 </div>
                             </div>
                             <div>
@@ -217,7 +234,7 @@ $t = include "lang/{$lang}.php";
                         <article>
                             <div>
                                 <div class="icon">
-                                    <i class="fa-regular fa-building"></i>
+                                    <i class="fa-solid fa-gauge-high"></i>
                                 </div>
                             </div>
                             <div>
@@ -231,7 +248,7 @@ $t = include "lang/{$lang}.php";
 
             <section id="projetos" class="projetos">
                 <div class="container">
-                    <h3 class="subheading"><?php echo $t['projetos_sub']; ?></h3>
+                    <span class="subheading"><?php echo $t['projetos_sub']; ?></span>
                     <h2 class="heading"><?php echo $t['projetos_head']; ?></h2>
                     <div class="grid" id="projetos-grid">
                     </div>
@@ -243,7 +260,7 @@ $t = include "lang/{$lang}.php";
 
             <section id="processo">
                 <div class="container"> 
-                    <h3 class="subheading"><?php echo $t['como_trabalho_sub']; ?></h3>
+                    <span class="subheading"><?php echo $t['como_trabalho_sub']; ?></span>
                     <h2 class="heading"><?php echo $t['como_trabalho_head']; ?></h2>
                     <div class="grid">
                         <article>
@@ -329,14 +346,14 @@ $t = include "lang/{$lang}.php";
             <section id="agencias">
                 <div class="container"> 
                     <div>
-                        <h3 class="subheading"><?php echo $t['ajuda_sub']; ?></h3>
+                        <span class="subheading"><?php echo $t['ajuda_sub']; ?></span>
                         <h2 class="heading"><?php echo $t['ajuda_head']; ?></h2>
                     </div>
                     <div>
                         <ul class="grid">
                             <li>
                                 <div>
-                                    <i class="fa-solid fa-gauge"></i>
+                                    <i class="fa-solid fa-hourglass-half"></i>
                                 </div> 
                                 <div>
                                     <span><?php echo $t['ajuda_1']; ?></span>
@@ -344,7 +361,7 @@ $t = include "lang/{$lang}.php";
                             </li>
                             <li>
                                 <div>
-                                    <i class="fa-solid fa-mobile-screen-button"></i> 
+                                    <i class="fa-solid fa-mobile-screen-button"></i>
                                 </div>
                                 <div>
                                     <span><?php echo $t['ajuda_2']; ?></span>
@@ -352,7 +369,7 @@ $t = include "lang/{$lang}.php";
                             </li>
                             <li>
                                 <div>
-                                    <i class="fa-solid fa-users"></i>
+                                    <i class="fa-solid fa-users-gear"></i>
                                 </div> 
                                 <div>
                                     <span><?php echo $t['ajuda_3']; ?></span>
@@ -360,7 +377,7 @@ $t = include "lang/{$lang}.php";
                             </li>
                             <li>
                                 <div>
-                                    <i class="fa-solid fa-rocket"></i>
+                                    <i class="fa-solid fa-laptop-code"></i>
                                 </div> 
                                 <div>
                                     <span><?php echo $t['ajuda_4']; ?></span>
@@ -368,26 +385,10 @@ $t = include "lang/{$lang}.php";
                             </li>
                             <li>
                                 <div>
-                                    <i class="fa-solid fa-chart-line"></i>
-                                </div> 
+                                    <i class="fa-solid fa-gauge-simple-high"></i>
+                                </div>  
                                 <div>
                                     <span><?php echo $t['ajuda_5']; ?></span>
-                                </div>
-                            </li>
-                            <li>
-                                <div>
-                                    <i class="fa-solid fa-bug"></i>
-                                </div>
-                                <div>
-                                    <span><?php echo $t['ajuda_6']; ?></span>
-                                </div>
-                            </li>
-                            <li>
-                                <div>
-                                    <i class="fa-solid fa-code"></i>
-                                </div> 
-                                <div>
-                                    <span><?php echo $t['ajuda_7']; ?></span>
                                 </div>
                             </li>
                             <li>
@@ -395,15 +396,7 @@ $t = include "lang/{$lang}.php";
                                     <i class="fa-solid fa-gears"></i>
                                 </div>
                                 <div>
-                                    <span><?php echo $t['ajuda_8']; ?></span>
-                                </div>
-                            </li>
-                            <li>
-                                <div>
-                                    <i class="fa-solid fa-arrows-rotate"></i>
-                                </div>
-                                <div>
-                                    <span><?php echo $t['ajuda_9']; ?></span>
+                                    <span><?php echo $t['ajuda_6']; ?></span>
                                 </div>
                             </li>
                         </ul>
@@ -439,6 +432,7 @@ $t = include "lang/{$lang}.php";
                     </div>
                     <div>
                         <form action="envia.php" method="POST" novalidate>
+                            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                             <div>
                                 <label for="nome"><?php echo $t['form_nome']; ?></label>
                                 <input type="text" id="nome" name="nome" placeholder="<?php echo $t['form_nome_ph']; ?>" required>
@@ -565,7 +559,7 @@ $t = include "lang/{$lang}.php";
                     <h4><?php echo $t['footer_contato_titulo']; ?></h4>
                     <ul>
                         <li><i class="fa-solid fa-envelope"></i> marianny.nalini@gmail.com</li>
-                        <li><a href="https://www.linkedin.com/in/marianny-nalini/" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a></li>
+                        <li><a href="https://www.linkedin.com/in/marianny-nalini/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i> LinkedIn</a></li>
                         <li><i class="fa-solid fa-location-dot"></i> São Vicente, SP</li>
                     </ul>
                 </div>
@@ -576,13 +570,13 @@ $t = include "lang/{$lang}.php";
                 <p>&copy; <?php echo $t['copyright']; ?></p>
             </div>
         </div>
-        <div id="modal-sucesso" class="modal">
+        <div id="modal-sucesso" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo" aria-describedby="modal-desc">
             <div class="modal-content">
-                <h3><?php echo $t['modal_titulo']; ?></h3>
-                <p><?php echo $t['modal_desc']; ?></p>
+                <h3 id="modal-titulo"><?php echo $t['modal_titulo']; ?></h3>
+                <p id="modal-desc"><?php echo $t['modal_desc']; ?></p>
                 <button id="fechar-modal" class="btn btn-primary"><?php echo $t['modal_fechar']; ?></button>
             </div>
         </div>
-        <script src="assets/js/main.js?v=2"></script>
+        <script src="assets/js/main.js?v=<?php echo filemtime('assets/js/main.js'); ?>"></script>
     </body>
 </html>

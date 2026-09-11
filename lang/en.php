@@ -24,7 +24,7 @@ return [
 
     // Servicos
     'servicos_sub' => 'WHAT I DO',
-    'servicos_head' => 'Technical solutions to bring your project to life',
+    'servicos_head' => 'Implementation for projects built to ship to production',
     'srv_1_title' => 'WordPress',
     'srv_1_desc' => 'Development and implementation of WordPress websites, featuring custom themes, components, features, and integrations tailored to project needs.',
     'srv_2_title' => 'Landing Pages',
@@ -36,14 +36,14 @@ return [
     'btn_saber_mais' => 'Let`s talk',
 
     // Para Quem
-    'para_quem_sub' => 'WHO IT IS FOR',
+    'para_quem_sub' => 'When it makes sense to work together',
     'para_quem_head' => 'Serving companies, professionals, and agencies',
     'pq_1_title' => 'Marketing agencies & product launches',
-    'pq_1_desc' => 'Technical support to increase delivery capacity without hiring full-time staff.',
+    'pq_1_desc' => 'You have an approved layout and need it turned into clean, responsive, pixel-perfect code.',
     'pq_2_title' => 'Professionals & infoproduct creators',
-    'pq_2_desc' => 'Pages and technical structures that convey professionalism and generate better results.',
+    'pq_2_desc' => 'Your agency needs on-demand technical support to handle new projects, meet deadlines, and scale delivery.',
     'pq_3_title' => 'Local businesses & companies',
-    'pq_3_desc' => 'Fast, modern, and optimized websites to attract customers and build trust.',
+    'pq_3_desc' => 'Your existing website needs speed optimization, bug fixes, analytics tagging, or new feature integrations.',
 
     // Processo
     'como_trabalho_sub' => 'HOW I WORK',
@@ -58,8 +58,8 @@ return [
     'passo_4_desc' => 'Polishing final details, preparing files, and handing over the production-ready project.',
 
     // Seção Projetos JSON
-    'projetos_sub' => 'PROJECTS',
-    'projetos_head' => 'Some developed projects',
+    'projetos_sub' => 'SELECTED PROJECTS',
+    'projetos_head' => 'Implementations with technical context',
     'btn_load_more' => 'View more projects',
 
     // Para Agências
@@ -73,15 +73,12 @@ return [
     // Ajuda se...
     'ajuda_sub' => 'I CAN HELP YOU IF...',
     'ajuda_head' => 'Is your project stuck due to a technical issue?',
-    'ajuda_1' => 'My WordPress site is slow.',
-    'ajuda_2' => 'My site doesn’t look good on mobile.',
-    'ajuda_3' => 'My agency is overwhelmed.',
-    'ajuda_4' => 'I need a fast Landing Page.',
-    'ajuda_5' => 'PageSpeed is too low.',
-    'ajuda_6' => 'I encountered an error and don’t know how to fix it.',
-    'ajuda_7' => 'I have the email layout, but need it coded.',
-    'ajuda_8' => 'I need adjustments or integrations on my site.',
-    'ajuda_9' => 'I want to migrate my site.',
+    'ajuda_1' => 'My WordPress website is slow',
+    'ajuda_2' => 'My website doesn\'t look good on mobile',
+    'ajuda_3' => 'My agency is overloaded',
+    'ajuda_4' => 'I need to build a landing page from an approved layout',
+    'ajuda_5' => 'My PageSpeed score is too low',
+    'ajuda_6' => 'I need adjustments or integrations on my website',
 
     // Contato
     'contato_head' => 'Ready to turn your layout into code?',
@@ -119,7 +116,7 @@ return [
     'form_submit' => 'Send project',
 
     // Footer
-    'footer_desc' => 'Technical development for digital projects that need to come to life with quality and performance.',
+    'footer_desc' => 'Front-End, WordPress, and optimization for responsive, accessible, and launch-ready digital experiences.',
     'footer_navegacao' => 'Navigation',
     'footer_servicos' => 'Services',
     'footer_servico_5' => 'Technical Fixes',

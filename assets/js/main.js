@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   let allProjects = []
-  let itemsPerPage = 4
+  let itemsPerPage = 3
   let currentIndex = 0
 
   const grid = document.getElementById('projetos-grid')
@@ -16,38 +16,66 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function renderProjects() {
     const currentLang = document.body.getAttribute('data-lang') || 'pt'
-
     const nextIndex = currentIndex + itemsPerPage
     const slice = allProjects.slice(currentIndex, nextIndex)
 
-    slice.forEach((project, index) => {
+    slice.forEach((project) => {
       const article = document.createElement('article')
-      const categoria = project[`categoria_${currentLang}`]
-      const titulo = project[`titulo_${currentLang}`]
-      const descricao = project[`descricao_${currentLang}`]
-      const btnTexto = currentLang === 'pt' ? 'Ver projeto' : 'View project'
 
-      const altText =
+      const img = document.createElement('img')
+      img.src = project.imagem
+      img.alt =
         currentLang === 'pt'
-          ? `Prévia do projeto ${titulo}`
-          : `Preview of the ${titulo} project`
+          ? `Prévia do projeto ${project[`titulo_${currentLang}`]}`
+          : `Preview of ${project[`titulo_${currentLang}`]}`
+      img.loading = 'lazy'
+      img.decoding = 'async'
 
-      article.innerHTML = `
-          <img src="${project.imagem}" alt="${altText}" loading="lazy" decoding="async">
-          <div class="content">
-              <div><span>${categoria}</span></div>
-              <div>
-                  <h3>${titulo}</h3>
-                  <p>${descricao}</p>
-              </div>
-              <a href="${project.link}" target="_blank">${btnTexto}</a>
-          </div>
-      `
+      const content = document.createElement('div')
+      content.className = 'content'
+
+      const catDiv = document.createElement('div')
+      const catSpan = document.createElement('span')
+      catSpan.textContent = project[`categoria_${currentLang}`]
+      catDiv.appendChild(catSpan)
+
+      const textDiv = document.createElement('div')
+      const h3 = document.createElement('h3')
+      h3.textContent = project[`titulo_${currentLang}`]
+      const p = document.createElement('p')
+      p.textContent = project[`descricao_${currentLang}`]
+      textDiv.appendChild(h3)
+      textDiv.appendChild(p)
+
+      let techUl = null
+      if (project.tech && project.tech.length) {
+        techUl = document.createElement('ul')
+        techUl.className = 'tech-list'
+        project.tech.forEach((tech) => {
+          const li = document.createElement('li')
+          li.textContent = tech
+          techUl.appendChild(li)
+        })
+      }
+
+      const a = document.createElement('a')
+      a.href = project.link
+      a.target = '_blank'
+      a.rel = 'noopener noreferrer'
+      a.textContent = currentLang === 'pt' ? 'Ver projeto' : 'View project'
+
+      content.appendChild(catDiv)
+      content.appendChild(textDiv)
+      if (techUl) content.appendChild(techUl)
+      content.appendChild(a)
+
+      article.appendChild(img)
+      article.appendChild(content)
+
       grid.appendChild(article)
     })
 
     currentIndex = nextIndex
-
     if (currentIndex >= allProjects.length) {
       loadMoreBtn.style.display = 'none'
     }
@@ -79,14 +107,29 @@ document.addEventListener('DOMContentLoaded', function () {
   const form = document.querySelector('form')
   const modal = document.querySelector('#modal-sucesso')
   const fecharModal = document.querySelector('#fechar-modal')
+  const submitBtn = form.querySelector('button[type="submit"]')
 
-  fecharModal.addEventListener('click', () => {
+  function abrirModal() {
+    modal.classList.add('ativo')
+    fecharModal.focus()
+  }
+
+  function fecharModalFunc() {
     modal.classList.remove('ativo')
-  })
+    if (submitBtn) submitBtn.focus()
+  }
+
+  fecharModal.addEventListener('click', fecharModalFunc)
 
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
-      modal.classList.remove('ativo')
+      fecharModalFunc()
+    }
+  })
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('ativo')) {
+      fecharModalFunc()
     }
   })
 
@@ -175,12 +218,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (!layout.value) {
-      showError(prazo, 'Selecione a opção.')
+      showError(layout, 'Selecione a opção.')
       isValid = false
     }
 
     if (!contrato.value) {
-      showError(prazo, 'Selecione a opção.')
+      showError(contrato, 'Selecione a opção.')
       isValid = false
     }
 
@@ -207,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
       })
 
       if (response.ok) {
-        modal.classList.add('ativo')
+        abrirModal()
         form.reset()
         document
           .querySelectorAll('.custom-select-wrapper')
@@ -283,12 +326,17 @@ document.addEventListener('DOMContentLoaded', function () {
   const menuOverlay = document.querySelector('.menu-overlay')
 
   function toggleMenu() {
-    nav.classList.toggle('active')
+    const isOpen = nav.classList.toggle('active')
     if (navContent) navContent.classList.toggle('active')
     if (menuOverlay) menuOverlay.classList.toggle('active')
 
-    const isOpen = nav.classList.contains('active')
     menuToggle.setAttribute('aria-expanded', isOpen)
+    menuToggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu')
+
+    const icon = menuToggle.querySelector('i')
+    if (icon) {
+      icon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'
+    }
   }
 
   if (menuToggle) {
@@ -298,13 +346,18 @@ document.addEventListener('DOMContentLoaded', function () {
   if (menuOverlay) {
     menuOverlay.addEventListener('click', toggleMenu)
   }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('active')) {
+      toggleMenu()
+      menuToggle.focus()
+    }
+  })
 
   document.querySelectorAll('header nav a').forEach((link) => {
     link.addEventListener('click', () => {
-      nav.classList.remove('active')
-      if (navContent) navContent.classList.remove('active')
-      if (menuOverlay) menuOverlay.classList.remove('active')
-      menuToggle.setAttribute('aria-expanded', 'false')
+      if (nav.classList.contains('active')) {
+        toggleMenu()
+      }
     })
   })
 })
