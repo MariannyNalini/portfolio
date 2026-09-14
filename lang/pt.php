@@ -1,8 +1,7 @@
 <?php
 return [
-
-    'meta_title' => 'Marianny Nalini | Desenvolvedora Front-End & WordPress',
-    'meta_description' => 'Desenvolvimento front-end especializado para agências e empresas. Transformo designs em landing pages, sites WordPress e experiências de alta performance.',
+    'meta_title' => 'Marianny Nalini | WordPress Developer e Front-End Developer',
+    'meta_description' => 'WordPress Developer e Front-End Developer com experiência em temas customizados, Landing Pages, manutenção e interfaces responsivas para agências e empresas.',
     'meta_keywords' => 'Desenvolvedora Front-End, WordPress, Landing Pages, Performance, Email Marketing, São Vicente',
 
     // Header & Nav
@@ -112,13 +111,13 @@ return [
     'opt_layout_desenvolvimento' => 'Sim, mas ainda está em desenvolvimento',
     'opt_layout_nao' => 'Não',
     'opt_layout_implementacao' => 'Preciso apenas da implementação técnica',
-    'form_contrato' => 'Como você está buscando contratar?',
+    'form_contrato' => 'Como podemos trabalhar juntos?',
     'opt_contrato_fechado' => 'Projeto fechado',
     'opt_contrato_pontual' => 'Demanda pontual',
     'opt_contrato_recorrente' => 'Suporte recorrente',
     'opt_contrato_equipe' => 'Extensão de equipe',
     'opt_contrato_white' => 'White-label',
-    'opt_contrato_oportunidade' => 'Oportunidade profissional',
+    'opt_contrato_oportunidade' => 'Vaga ou oportunidade profissional',
     'form_mensagem' => 'Fale sobre o seu projeto',
     'form_mensagem_ph' => 'Conte um pouco sobre o que você precisa...',
     'form_submit' => 'Enviar projeto',

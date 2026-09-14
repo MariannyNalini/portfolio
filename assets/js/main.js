@@ -100,27 +100,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
     currentIndex = nextIndex
     if (currentIndex >= allProjects.length) {
-      loadMoreBtn.style.display = 'none'
+      loadMoreBtn.hidden = true
+    } else {
+      loadMoreBtn.hidden = false
     }
   }
 
-  loadMoreBtn.addEventListener('click', function (e) {
-    e.preventDefault()
-    loadMoreBtn.textContent = window.i18n
-      ? window.i18n.loading
-      : 'Carregando...'
-    loadMoreBtn.disabled = true
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', () => {
+      const originalText = window.i18n
+        ? window.i18n.loadMore
+        : 'Ver mais projetos'
 
-    setTimeout(() => {
-      renderProjects()
-      if (currentIndex < allProjects.length) {
-        loadMoreBtn.textContent = window.i18n
-          ? window.i18n.loadMore
-          : 'Ver mais projetos'
-        loadMoreBtn.disabled = false
-      }
-    }, 500)
-  })
+      loadMoreBtn.textContent = window.i18n
+        ? window.i18n.loading
+        : 'Carregando...'
+
+      loadMoreBtn.disabled = true
+      loadMoreBtn.setAttribute('aria-busy', 'true')
+
+      setTimeout(() => {
+        renderProjects()
+
+        if (currentIndex < allProjects.length) {
+          loadMoreBtn.textContent = originalText
+          loadMoreBtn.disabled = false
+          loadMoreBtn.removeAttribute('aria-busy')
+        }
+      }, 500)
+    })
+  }
 
   const header = document.querySelector('header')
 

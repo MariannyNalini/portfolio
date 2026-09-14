@@ -189,7 +189,7 @@ $t = include "lang/{$lang}.php";
                                 class="avatar"
                                 width="1440" 
                                 height="1920"
-                                fetchpriority="high"
+                                loading="lazy"
                                 decoding="async">
                         </picture>
                     </div>
@@ -299,7 +299,9 @@ $t = include "lang/{$lang}.php";
                     <div class="grid" id="projetos-grid">
                     </div>
                     <div class="btn-container">
-                        <a href="#" id="load-more-btn" class="btn btn-primary"><?php echo $t['btn_load_more']; ?></a>
+                        <button type="button" id="load-more-btn" class="btn btn-primary">
+                            <?php echo $t['btn_load_more']; ?>
+                        </button>
                     </div>
                 </div>
             </section>

@@ -1,7 +1,7 @@
 <?php
 return [
-    'meta_title' => 'Marianny Nalini | Front-End & WordPress Developer',
-    'meta_description' => 'Specialized front-end development for agencies and companies. I turn designs into landing pages, WordPress websites, and high-performance digital experiences.',
+    'meta_title' => 'Marianny Nalini | WordPress Developer & Front-End Developer',
+    'meta_description' => 'WordPress Developer and Front-End Developer experienced in custom themes, landing pages, maintenance, and responsive interfaces for agencies and companies.',
     'meta_keywords' => 'Front-End Developer, WordPress, Landing Pages, Performance, Email Marketing, São Vicente',
 
     // Header & Nav
@@ -112,13 +112,13 @@ return [
     'opt_layout_desenvolvimento' => 'Yes, but it is still in development',
     'opt_layout_nao' => 'No',
     'opt_layout_implementacao' => 'I only need the technical implementation',
-    'form_contrato' => 'What type of engagement are you looking for?',
+    'form_contrato' => 'How can we work together?',
     'opt_contrato_fechado' => 'Fixed-price project',
     'opt_contrato_pontual' => 'One-off task',
     'opt_contrato_recorrente' => 'Recurring support',
     'opt_contrato_equipe' => 'Team extension',
     'opt_contrato_white' => 'White-label',
-    'opt_contrato_oportunidade' => 'Professional opportunity',
+    'opt_contrato_oportunidade' => 'Job or professional opportunity',
     'form_mensagem' => 'Talk about your project',
     'form_mensagem_ph' => 'Tell me a little about what you need...',
     'form_submit' => 'Send project',

@@ -429,7 +429,7 @@ nav a:hover {
 #sobre p {
   line-height: 1.5;
   margin-bottom: 15px;
-  text-align: justify;
+  text-align: left;
 }
 
 #servicos {
@@ -1106,58 +1106,6 @@ footer p {
     width: auto;
   }
 
-  .menu-toggle {
-    display: none;
-  }
-
-  header nav {
-    position: static;
-    width: auto;
-    background: none;
-    backdrop-filter: none;
-    border-bottom: none;
-    padding: 0;
-    box-shadow: none;
-    clip-path: none;
-    visibility: visible;
-    flex-direction: row;
-    gap: 16px;
-  }
-
-  .nav-content {
-    display: flex !important;
-    align-items: center;
-    gap: 16px;
-  }
-
-  nav ul {
-    flex-direction: row;
-    width: auto;
-    gap: 16px;
-  }
-
-  nav a {
-    font-size: 0.875rem;
-    white-space: nowrap;
-  }
-
-  .nav-btn-container {
-    width: auto;
-    margin: 0;
-  }
-
-  .nav-btn-container .btn {
-    padding: 8px 16px;
-    font-size: 0.875rem;
-    white-space: nowrap;
-  }
-
-  .lang-switcher {
-    margin-left: 8px;
-    margin-top: 0;
-    width: auto;
-  }
-
   #inicio {
     padding: 200px 0 80px;
   }
@@ -1381,6 +1329,58 @@ footer p {
 }
 
 @media (min-width: 1024px) {
+  .menu-toggle {
+    display: none;
+  }
+
+  header nav {
+    position: static;
+    width: auto;
+    background: none;
+    backdrop-filter: none;
+    border-bottom: none;
+    padding: 0;
+    box-shadow: none;
+    clip-path: none;
+    visibility: visible;
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .nav-content {
+    display: flex !important;
+    align-items: center;
+    gap: 16px;
+  }
+
+  nav ul {
+    flex-direction: row;
+    width: auto;
+    gap: 16px;
+  }
+
+  nav a {
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  .nav-btn-container {
+    width: auto;
+    margin: 0;
+  }
+
+  .nav-btn-container .btn {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  .lang-switcher {
+    margin-left: 8px;
+    margin-top: 0;
+    width: auto;
+  }
+
   .container {
     padding: 0 4rem;
   }
@@ -1396,15 +1396,6 @@ footer p {
 
   nav a {
     font-size: var(--text-nav-desktop);
-  }
-
-  .nav-btn-container .btn {
-    padding: 12px 24px;
-    font-size: var(--text-nav-desktop);
-  }
-
-  .lang-switcher {
-    margin-left: 15px;
   }
 
   #servicos {
