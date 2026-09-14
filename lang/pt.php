@@ -6,8 +6,9 @@ return [
     'meta_keywords' => 'Desenvolvedora Front-End, WordPress, Landing Pages, Performance, Email Marketing, São Vicente',
 
     // Header & Nav
-    'role' => 'Desenvolvedora Front-End & WordPress',
+    'role' => 'Desenvolvedora WordPress & Front-end',
     'nav_inicio' => 'Início',
+    'nav_sobre' => 'Sobre',
     'nav_servicos' => 'Serviços',
     'nav_projetos' => 'Projetos',
     'nav_processo' => 'Processo',
@@ -22,6 +23,12 @@ return [
     'hero_item_4' => 'Performance',
     'btn_conversar' => 'Quero tirar meu projeto do papel',
     'btn_ver_projetos' => 'Ver projetos',
+
+    // Sobre
+    'alt_sobre' => 'Mulher de cabelo ondulado médio preto com pontas roxas, pele branca, olhos castanho-escuros. Ela usa maquiagem escura, gloss vermelho, um piercing no septo nasal e um piercing no lábio inferior. Ela veste uma camiseta cinza estampada e uma gargantilha prateada. O fundo mostra o interior desfocado de um ônibus.',
+    'sobre_sub' => 'Sobre',
+    'sobre_head' => 'Sou Marianny, WordPress Developer e Front-End Developer.',
+    'sobre_text' => '<p>Tenho mais de 15 anos de experiência em desenvolvimento web e atuo profissionalmente com WordPress desde 2013.</p> <p>Desenvolvo e customizo temas WordPress, implemento websites e Landing Pages a partir de layouts aprovados e trabalho na manutenção, suporte e evolução de projetos que já estão em produção.</p> <p>Minha base em Front-End, com HTML, CSS e JavaScript, me permite cuidar da implementação visual, do comportamento responsivo e da estrutura técnica das interfaces. Ao longo da trajetória, trabalhei em agências e em projetos para diferentes segmentos, colaborando com designers, estrategistas, times de marketing e atendimento.</p> <p>Também atuo como extensão técnica de agências e equipes, contribuindo em demandas de desenvolvimento, manutenção e evolução de produtos digitais.</p> ',
 
     // Servicos
     'servicos_sub' => 'O QUE EU FAÇO',
@@ -39,12 +46,12 @@ return [
     // Para Quem
     'para_quem_sub' => 'Quando faz sentido trabalhar comigo',
     'para_quem_head' => 'Atendo empresas, profissionais e agências',
-    'pq_1_title' => 'Você já tem layout e precisa de implementação.',
-    'pq_1_desc' => 'Você tem o layout aprovado e precisa transformá-lo em código limpo, responsivo e fiel ao design.',
-    'pq_2_title' => 'Sua agência precisa ampliar a capacidade de entrega.',
-    'pq_2_desc' => 'Sua agência precisa de reforço técnico sob demanda para absorver novos projetos, cumprir prazos e acelerar entregas.',
-    'pq_3_title' => 'Seu site precisa de ajustes, performance ou integrações.',
-    'pq_3_desc' => 'Seu site já existe, mas precisa de otimização de carregamento, correções, tagueamento ou novas funcionalidades.',
+    'pq_1_title' => 'Agências e equipes com layouts aprovados',
+    'pq_1_desc' => 'Você tem um layout aprovado e precisa que ele seja transformado em código limpo, responsivo e fiel ao design (pixel-perfect).',
+    'pq_2_title' => 'Agências que precisam de capacidade técnica',
+    'pq_2_desc' => 'Sua agência precisa de suporte técnico sob demanda para assumir novos projetos, cumprir prazos e aumentar a capacidade de entrega.',
+    'pq_3_title' => 'Empresas com sites em produção',
+    'pq_3_desc' => 'Seu site atual precisa de otimização de velocidade, correção de bugs, rastreamento de métricas (analytics) ou novas integrações.',
 
     // Processo
     'como_trabalho_sub' => 'COMO TRABALHO',
@@ -128,6 +135,19 @@ return [
     'modal_titulo' => 'Mensagem enviada!',
     'modal_desc' => 'Obrigado pelo contato. Retornarei em breve.',
     'modal_fechar' => 'Fechar',
+
+    // JavaScript do formulário
+    'js_form_name_required' => 'Por favor, insira seu nome.',
+    'js_form_email_required' => 'O campo e-mail é obrigatório.',
+    'js_form_email_invalid' => 'Por favor, insira um e-mail válido.',
+    'js_form_project_required' => 'Selecione o tipo de projeto.',
+    'js_form_deadline_required' => 'Selecione o prazo desejado.',
+    'js_form_option_required' => 'Selecione uma opção.',
+    'js_form_message_required' => 'Escreva uma breve mensagem sobre o projeto.',
+    'js_form_sending' => 'Enviando mensagem...',
+    'js_form_reset_select' => 'Selecione',
+    'js_form_submit_error' => 'Ocorreu um erro ao enviar. Tente novamente.',
+    'js_form_connection_error' => 'Erro de conexão com o servidor.',
 
     // Chaves de Acessibilidade, Imagens e JavaScript (i18n)
     'alt_hero'          => 'Mockup de dispositivos exibindo projetos digitais',

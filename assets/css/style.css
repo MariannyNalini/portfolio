@@ -146,7 +146,7 @@ h2.heading {
   font-weight: 400;
   font-style: normal;
   display: block;
-  font-size: 3em;
+  font-size: 2.7em;
   line-height: 1em;
 }
 
@@ -154,7 +154,7 @@ h2.heading {
   display: block;
   margin-top: -8px;
   text-transform: uppercase;
-  font-size: 0.7em;
+  font-size: 0.8em;
   font-weight: 300;
 }
 
@@ -329,9 +329,6 @@ nav a:hover {
   visibility: visible;
 }
 
-/* ==========================================================================
-   SEÇÕES (BASE / MOBILE)
-   ========================================================================== */
 #inicio {
   background: var(--hero-bg);
   padding: 200px 0 40px;
@@ -402,6 +399,37 @@ nav a:hover {
   filter: blur(120px);
   opacity: 0.8;
   z-index: 1;
+}
+
+#sobre {
+  padding: 40px 0;
+}
+#sobre .container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+#sobre .avatar {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+}
+#sobre .subheading,
+#sobre .heading {
+  text-align: left;
+}
+
+#sobre .heading {
+  margin-bottom: 24px;
+}
+
+#sobre p {
+  line-height: 1.5;
+  margin-bottom: 15px;
+  text-align: justify;
 }
 
 #servicos {
@@ -746,12 +774,12 @@ nav a:hover {
   gap: 16px;
 }
 
-#contato ul {
+#contato .content > ul {
   display: flex;
   gap: 16px;
 }
 
-#contato ul li {
+#contato .content > ul li {
   display: flex;
   gap: 5px;
 }
@@ -770,7 +798,8 @@ form > div,
   gap: 6px;
 }
 
-form label {
+form label,
+.select-label {
   font-size: 14px;
   font-weight: 500;
   color: #374151;
@@ -812,6 +841,7 @@ textarea.error,
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
+  max-width: calc(100vw - 48px);
   background-color: #ef4444;
   color: #ffffff;
   padding: 4px 10px;
@@ -819,7 +849,8 @@ textarea.error,
   font-size: 11px;
   font-weight: 500;
   z-index: 50;
-  white-space: nowrap;
+  line-height: 1.35;
+  white-space: normal;
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
   pointer-events: none;
 }
@@ -854,9 +885,21 @@ textarea.error,
   align-items: center;
   cursor: pointer;
   box-sizing: border-box;
+  font-family: inherit;
+  text-align: left;
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
+}
+
+.select-trigger:hover {
+  border-color: #a78bfa;
+}
+
+.select-trigger:focus-visible {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+  outline: none;
 }
 
 .custom-select-wrapper.open .select-trigger {
@@ -874,7 +917,7 @@ textarea.error,
   transform: rotate(180deg);
 }
 
-.custom-options {
+#contato .custom-options {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -883,13 +926,17 @@ textarea.error,
   border: 1px solid #d1d5db;
   border-radius: 8px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  display: none;
+  display: none !important;
   z-index: 50;
-  overflow: hidden;
+  max-height: 250px;
+  margin: 0;
+  padding: 4px 0;
+  overflow-y: auto;
+  list-style: none;
 }
 
-.custom-select-wrapper.open .custom-options {
-  display: block;
+#contato .custom-select-wrapper.open .custom-options {
+  display: block !important;
 }
 
 .custom-option {
@@ -897,15 +944,25 @@ textarea.error,
   font-size: 14px;
   color: #1f2937;
   cursor: pointer;
+  line-height: 1.4;
+  outline: none;
   transition:
     background 0.15s,
     color 0.15s;
 }
 
-.custom-option:hover {
+.custom-option:hover,
+.custom-option[aria-selected='true'] {
   background-color: #f3f4f6;
   color: #7c3aed;
-  font-weight: 500;
+  font-weight: 600;
+}
+
+.custom-option:focus-visible {
+  background-color: #ede9fe;
+  color: #5b21b6;
+  outline: 3px solid rgba(124, 58, 237, 0.35);
+  outline-offset: -3px;
 }
 
 footer {
@@ -1144,6 +1201,23 @@ footer p {
     gap: 30px;
   }
 
+  #sobre {
+    padding: 80px 0 40px;
+  }
+
+  #sobre .container {
+    flex-direction: row;
+    gap: 40px;
+  }
+  #sobre .container > div:nth-child(1) {
+    flex: 1;
+    border-right: 1px solid #e5e7eb;
+    padding-right: 48px;
+  }
+  #sobre .container > div:nth-child(2) {
+    flex: 2;
+  }
+
   #servicos {
     padding: 60px 0;
   }
@@ -1271,7 +1345,7 @@ footer p {
     flex: 2;
   }
 
-  #contato ul {
+  #contato .content > ul {
     margin-top: auto;
   }
 
@@ -1334,7 +1408,7 @@ footer p {
   }
 
   #servicos {
-    padding: 80px 0;
+    padding: 40px 0 80px 0;
   }
 
   #servicos .grid {

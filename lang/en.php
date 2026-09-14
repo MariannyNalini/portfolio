@@ -5,8 +5,9 @@ return [
     'meta_keywords' => 'Front-End Developer, WordPress, Landing Pages, Performance, Email Marketing, São Vicente',
 
     // Header & Nav
-    'role' => 'Front-End Developer & WordPress',
+    'role' => 'WordPress Developer & Front-end',
     'nav_inicio' => 'Home',
+    'nav_sobre' => 'About',
     'nav_servicos' => 'Services',
     'nav_projetos' => 'Projects',
     'nav_processo' => 'Workflow',
@@ -21,6 +22,13 @@ return [
     'hero_item_4' => 'Performance',
     'btn_conversar' => 'Let\'s make it happen.',
     'btn_ver_projetos' => 'View projects',
+
+    // Sobre
+    'alt_sobre' => 'Woman with medium black wavy hair with purple tips, fair skin, dark brown eyes. She wears dark makeup, red lip gloss, a septum nose ring, and a lower lip piercing. She is wearing a patterned grey t-shirt and a silver choker. The background shows the blurred interior of a bus.',
+    'sobre_sub' => 'About',
+    'sobre_head' => 'I\'m Marianny Nalini, WordPress Developer and Front-End Developer.',
+    'sobre_text' => '<p>I have over 15 years of experience in web development and have been working professionally with WordPress since 2013.</p> <p>I develop and customize WordPress themes, build websites and landing pages from approved layouts, and handle the maintenance, support, and ongoing evolution of live projects.</p> <p>My front-end foundation in HTML, CSS, and JavaScript enables me to manage visual implementation, responsive behavior, and the technical structure of interfaces. Throughout my career, I have worked at agencies and on projects across various industries, collaborating with designers, strategists, marketing teams, and account managers.</p> <p>I also act as a technical extension for agencies and teams, contributing to the development, maintenance, and evolution of digital products.</p>',
+    
 
     // Servicos
     'servicos_sub' => 'WHAT I DO',
@@ -38,12 +46,12 @@ return [
     // Para Quem
     'para_quem_sub' => 'When it makes sense to work together',
     'para_quem_head' => 'Serving companies, professionals, and agencies',
-    'pq_1_title' => 'Marketing agencies & product launches',
-    'pq_1_desc' => 'You have an approved layout and need it turned into clean, responsive, pixel-perfect code.',
-    'pq_2_title' => 'Professionals & infoproduct creators',
-    'pq_2_desc' => 'Your agency needs on-demand technical support to handle new projects, meet deadlines, and scale delivery.',
-    'pq_3_title' => 'Local businesses & companies',
-    'pq_3_desc' => 'Your existing website needs speed optimization, bug fixes, analytics tagging, or new feature integrations.',
+    'pq_1_title' => 'Agencies and teams with approved designs',
+    'pq_1_desc' => 'You have an approved design and need it turned into clean, responsive, pixel-perfect code.',
+    'pq_2_title' => 'Agencies that need technical capacity',
+    'pq_2_desc' => 'Your agency needs on-demand technical support to take on new projects, meet deadlines, and increase delivery capacity.',
+    'pq_3_title' => 'Businesses with sites in production',
+    'pq_3_desc' => 'Your existing website needs speed optimization, bug fixes, analytics tracking, or new integrations.',
 
     // Processo
     'como_trabalho_sub' => 'HOW I WORK',
@@ -116,7 +124,7 @@ return [
     'form_submit' => 'Send project',
 
     // Footer
-    'footer_desc' => 'Front-End, WordPress, and optimization for responsive, accessible, and launch-ready digital experiences.',
+    'footer_desc' => 'Front-End, WordPress, and optimization for responsive, accessible, and launch-ready digital experiences.<br><br>I am also open to WordPress and Front-End opportunities in product and technology teams.',
     'footer_navegacao' => 'Navigation',
     'footer_servicos' => 'Services',
     'footer_servico_5' => 'Technical Fixes',
@@ -127,6 +135,19 @@ return [
     'modal_titulo' => 'Message sent!',
     'modal_desc' => 'Thanks for getting in touch. I will reply soon.',
     'modal_fechar' => 'Close',
+
+    // Form JavaScript
+    'js_form_name_required' => 'Please enter your name.',
+    'js_form_email_required' => 'Email is required.',
+    'js_form_email_invalid' => 'Please enter a valid email address.',
+    'js_form_project_required' => 'Select a project type.',
+    'js_form_deadline_required' => 'Select the desired timeframe.',
+    'js_form_option_required' => 'Select an option.',
+    'js_form_message_required' => 'Please write a brief message about the project.',
+    'js_form_sending' => 'Sending message...',
+    'js_form_reset_select' => 'Select',
+    'js_form_submit_error' => 'Something went wrong. Please try again.',
+    'js_form_connection_error' => 'Connection error. Please try again.',
 
     // Accessibility, Image & JavaScript Keys (i18n)
     'alt_hero'          => 'Device mockup displaying digital projects',

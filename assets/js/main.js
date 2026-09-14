@@ -233,41 +233,41 @@ document.addEventListener('DOMContentLoaded', function () {
       let isValid = true
 
       if (!nome.value.trim()) {
-        showError(nome, 'Por favor, insira seu nome.')
+        showError(nome, window.i18n.formNameRequired)
         isValid = false
       }
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       if (!email.value.trim()) {
-        showError(email, 'O campo e-mail é obrigatório.')
+        showError(email, window.i18n.formEmailRequired)
         isValid = false
       } else if (!emailRegex.test(email.value.trim())) {
-        showError(email, 'Por favor, insira um e-mail válido.')
+        showError(email, window.i18n.formEmailInvalid)
         isValid = false
       }
 
       if (!tipoProjeto.value) {
-        showError(tipoProjeto, 'Selecione o tipo de projeto.')
+        showError(tipoProjeto, window.i18n.formProjectRequired)
         isValid = false
       }
 
       if (!prazo.value) {
-        showError(prazo, 'Selecione o prazo desejado.')
+        showError(prazo, window.i18n.formDeadlineRequired)
         isValid = false
       }
 
       if (!layout.value) {
-        showError(layout, 'Selecione a opção.')
+        showError(layout, window.i18n.formOptionRequired)
         isValid = false
       }
 
       if (!contrato.value) {
-        showError(contrato, 'Selecione a opção.')
+        showError(contrato, window.i18n.formOptionRequired)
         isValid = false
       }
 
       if (!mensagem.value.trim()) {
-        showError(mensagem, 'Escreva uma breve mensagem sobre o projeto.')
+        showError(mensagem, window.i18n.formMessageRequired)
         isValid = false
       }
 
@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const submitBtnForm = form.querySelector('button[type="submit"]')
       const originalText = submitBtnForm ? submitBtnForm.textContent : 'Enviar'
       if (submitBtnForm) {
-        submitBtnForm.textContent = 'Enviando mensagem...'
+        submitBtnForm.textContent = window.i18n.formSending
         submitBtnForm.disabled = true
         submitBtnForm.style.opacity = '0.7'
       }
@@ -297,14 +297,21 @@ document.addEventListener('DOMContentLoaded', function () {
             .querySelectorAll('.custom-select-wrapper')
             .forEach((wrapper) => {
               const span = wrapper.querySelector('.select-trigger span')
-              span.textContent = 'Selecione'
+              const hiddenInput = wrapper.querySelector('input[type="hidden"]')
+
+              span.textContent = window.i18n.formResetSelect
               span.style.color = '#1f2937'
+              hiddenInput.value = ''
+
+              wrapper.querySelectorAll('.custom-option').forEach((option) => {
+                option.setAttribute('aria-selected', 'false')
+              })
             })
         } else {
-          alert(data.error || 'Ocorreu um erro ao enviar. Tente novamente.')
+          alert(data.error || window.i18n.formSubmitError)
         }
       } catch (error) {
-        alert('Erro de conexão com o servidor.')
+        alert(window.i18n.formConnectionError)
       } finally {
         if (submitBtnForm) {
           submitBtnForm.textContent = originalText
@@ -315,53 +322,121 @@ document.addEventListener('DOMContentLoaded', function () {
     })
   }
 
-  document.querySelectorAll('.custom-option').forEach((option) => {
-    option.addEventListener('click', () => {
-      const wrapper = option.closest('.custom-select-wrapper')
-      const hiddenInput = wrapper.querySelector('input[type="hidden"]')
-      if (hiddenInput.value) {
-        clearError(hiddenInput)
+  const selectWrappers = document.querySelectorAll('.custom-select-wrapper')
+
+  function closeAllSelects(except = null) {
+    selectWrappers.forEach((wrapper) => {
+      if (wrapper !== except) {
+        wrapper.classList.remove('open')
+
+        const trigger = wrapper.querySelector('.select-trigger')
+        if (trigger) {
+          trigger.setAttribute('aria-expanded', 'false')
+        }
       }
     })
-  })
+  }
 
-  document.querySelectorAll('.custom-select-wrapper').forEach((wrapper) => {
+  selectWrappers.forEach((wrapper) => {
     const trigger = wrapper.querySelector('.select-trigger')
-    const options = wrapper.querySelectorAll('.custom-option')
+    const options = Array.from(wrapper.querySelectorAll('.custom-option'))
     const hiddenInput = wrapper.querySelector('input[type="hidden"]')
     const triggerText = trigger.querySelector('span')
 
-    trigger.addEventListener('click', (e) => {
-      e.stopPropagation()
-      document.querySelectorAll('.custom-select-wrapper').forEach((w) => {
-        if (w !== wrapper) w.classList.remove('open')
-      })
-      wrapper.classList.toggle('open')
-    })
-
-    options.forEach((option) => {
-      option.addEventListener('click', () => {
-        triggerText.textContent = option.textContent
-        triggerText.style.color = '#1f2937'
-        hiddenInput.value = option.getAttribute('data-value')
-        wrapper.classList.remove('open')
-      })
-    })
-  })
-
-  window.addEventListener('click', () => {
-    document.querySelectorAll('.custom-select-wrapper').forEach((wrapper) => {
+    function closeSelect(returnFocus = false) {
       wrapper.classList.remove('open')
-    })
-  })
+      trigger.setAttribute('aria-expanded', 'false')
 
-  document.querySelectorAll('.select-trigger').forEach((trigger) => {
-    trigger.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault()
-        trigger.closest('.custom-select-wrapper').classList.toggle('open')
+      if (returnFocus) {
+        trigger.focus()
+      }
+    }
+
+    function selectOption(option) {
+      triggerText.textContent = option.textContent.trim()
+      triggerText.style.color = '#1f2937'
+      hiddenInput.value = option.dataset.value
+
+      options.forEach((item) => {
+        item.setAttribute('aria-selected', 'false')
+      })
+
+      option.setAttribute('aria-selected', 'true')
+      clearError(hiddenInput)
+      closeSelect(true)
+    }
+
+    function openSelect(initialIndex = 0) {
+      closeAllSelects(wrapper)
+      wrapper.classList.add('open')
+      trigger.setAttribute('aria-expanded', 'true')
+
+      const selectedIndex = options.findIndex(
+        (option) => option.dataset.value === hiddenInput.value,
+      )
+
+      const optionToFocus =
+        selectedIndex >= 0 ? options[selectedIndex] : options[initialIndex]
+
+      optionToFocus?.focus()
+    }
+
+    trigger.addEventListener('click', () => {
+      if (wrapper.classList.contains('open')) {
+        closeSelect()
+      } else {
+        openSelect()
       }
     })
+
+    trigger.addEventListener('keydown', (event) => {
+      if (['Enter', ' ', 'ArrowDown', 'ArrowUp'].includes(event.key)) {
+        event.preventDefault()
+        openSelect(event.key === 'ArrowUp' ? options.length - 1 : 0)
+      }
+
+      if (event.key === 'Escape') {
+        closeSelect()
+      }
+    })
+
+    options.forEach((option, index) => {
+      option.addEventListener('click', () => {
+        selectOption(option)
+      })
+
+      option.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          selectOption(option)
+        }
+
+        if (event.key === 'ArrowDown') {
+          event.preventDefault()
+          options[(index + 1) % options.length].focus()
+        }
+
+        if (event.key === 'ArrowUp') {
+          event.preventDefault()
+          options[(index - 1 + options.length) % options.length].focus()
+        }
+
+        if (event.key === 'Escape') {
+          event.preventDefault()
+          closeSelect(true)
+        }
+
+        if (event.key === 'Tab') {
+          closeSelect()
+        }
+      })
+    })
+  })
+
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.custom-select-wrapper')) {
+      closeAllSelects()
+    }
   })
 
   const menuToggle = document.querySelector('.menu-toggle')

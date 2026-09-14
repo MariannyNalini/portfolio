@@ -27,7 +27,18 @@ $t = include "lang/{$lang}.php";
                 previewProject: "<?php echo $t['js_preview_project']; ?>",
                 viewProject: "<?php echo $t['js_view_project']; ?>",
                 loading: "<?php echo $t['js_loading']; ?>",
-                loadMore: "<?php echo $t['js_load_more']; ?>"
+                loadMore: "<?php echo $t['js_load_more']; ?>",
+                formNameRequired: "<?php echo $t['js_form_name_required']; ?>",
+                formEmailRequired: "<?php echo $t['js_form_email_required']; ?>",
+                formEmailInvalid: "<?php echo $t['js_form_email_invalid']; ?>",
+                formProjectRequired: "<?php echo $t['js_form_project_required']; ?>",
+                formDeadlineRequired: "<?php echo $t['js_form_deadline_required']; ?>",
+                formOptionRequired: "<?php echo $t['js_form_option_required']; ?>",
+                formMessageRequired: "<?php echo $t['js_form_message_required']; ?>",
+                formSending: "<?php echo $t['js_form_sending']; ?>",
+                formResetSelect: "<?php echo $t['js_form_reset_select']; ?>",
+                formSubmitError: "<?php echo $t['js_form_submit_error']; ?>",
+                formConnectionError: "<?php echo $t['js_form_connection_error']; ?>"
             };
         </script>
         <title><?php echo $t['meta_title']; ?></title>
@@ -79,7 +90,7 @@ $t = include "lang/{$lang}.php";
         <header>
             <div class="container">
                 <div class="logo">
-                    <span class="name">Marianny</span>
+                    <span class="name">Marianny Nalini</span>
                     <span class="role"><?php echo $t['role']; ?></span>
                 </div>
                 <button class="menu-toggle" aria-label="<?php echo $t['aria_abrir_menu']; ?>" aria-expanded="false" aria-controls="primary-menu">
@@ -89,6 +100,7 @@ $t = include "lang/{$lang}.php";
                     <div class="nav-content" id="primary-menu">
                         <ul>
                             <li><a href="#inicio"><?php echo $t['nav_inicio']; ?></a></li>
+                            <li><a href="#sobre"><?php echo $t['nav_sobre']; ?></a></li>
                             <li><a href="#servicos"><?php echo $t['nav_servicos']; ?></a></li>
                             <li><a href="#projetos"><?php echo $t['nav_projetos']; ?></a></li>
                             <li><a href="#processo"><?php echo $t['nav_processo']; ?></a></li>
@@ -162,6 +174,29 @@ $t = include "lang/{$lang}.php";
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sobre">
+                <div class="container"> 
+                    <div>
+                        <picture>
+                            <source srcset="assets/img/marianny.webp" type="image/webp">
+                            <img 
+                                src="assets/img/marianny.png" 
+                                alt="<?php echo $t['alt_sobre']; ?>"
+                                class="avatar"
+                                width="1440" 
+                                height="1920"
+                                fetchpriority="high"
+                                decoding="async">
+                        </picture>
+                    </div>
+                    <div>
+                        <span class="subheading"><?php echo $t['sobre_sub']; ?></span>
+                        <h2 class="heading"><?php echo $t['sobre_head']; ?></h2>
+                        <?php echo $t['sobre_text']; ?>
                     </div>
                 </div>
             </section>
@@ -454,73 +489,187 @@ $t = include "lang/{$lang}.php";
                             </div>
                             
                             <div class="custom-select-wrapper" data-name="tipo_projeto">
-                                <label><?php echo $t['form_tipo']; ?></label>
-                                <div class="custom-select">
-                                    <div class="select-trigger" tabindex="0">
-                                        <span><?php echo $t['form_selecione']; ?></span>
-                                        <i class="fa-solid fa-chevron-down"></i>
-                                    </div>
-                                    <div class="custom-options">
-                                        <div class="custom-option" data-value="wordpress"><?php echo $t['opt_wordpress']; ?></div>
-                                        <div class="custom-option" data-value="landing_page"><?php echo $t['opt_landing_page']; ?></div>
-                                        <div class="custom-option" data-value="email_html"><?php echo $t['opt_email_html']; ?></div>
-                                        <div class="custom-option" data-value="performance"><?php echo $t['opt_performance']; ?></div>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="tipo_projeto" id="tipo_projeto" required>
+                            <span class="select-label" id="tipo_projeto_label">
+                                <?php echo $t['form_tipo']; ?>
+                            </span>
+
+                            <div class="custom-select">
+                                <button
+                                    type="button"
+                                    class="select-trigger"
+                                    id="tipo_projeto_trigger"
+                                    aria-haspopup="listbox"
+                                    aria-expanded="false"
+                                    aria-controls="tipo_projeto_options"
+                                    aria-labelledby="tipo_projeto_label tipo_projeto_value"
+                                >
+                                    <span id="tipo_projeto_value">
+                                        <?php echo $t['form_selecione']; ?>
+                                    </span>
+                                    <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                                </button>
+
+                                <ul
+                                    class="custom-options"
+                                    id="tipo_projeto_options"
+                                    role="listbox"
+                                    aria-labelledby="tipo_projeto_label"
+                                >
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="wordpress">
+                                        <?php echo $t['opt_wordpress']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="landing_page">
+                                        <?php echo $t['opt_landing_page']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="email_html">
+                                        <?php echo $t['opt_email_html']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="performance">
+                                        <?php echo $t['opt_performance']; ?>
+                                    </li>
+                                </ul>
                             </div>
 
-                            <div class="custom-select-wrapper" data-name="prazo_desejado">
-                                <label><?php echo $t['form_prazo']; ?></label>
-                                <div class="custom-select">
-                                    <div class="select-trigger" tabindex="0">
-                                        <span><?php echo $t['form_selecione']; ?></span>
-                                        <i class="fa-solid fa-chevron-down"></i>
-                                    </div>
-                                    <div class="custom-options">
-                                        <div class="custom-option" data-value="urgente"><?php echo $t['opt_urgente']; ?></div>
-                                        <div class="custom-option" data-value="curto_prazo"><?php echo $t['opt_curto']; ?></div>
-                                        <div class="custom-option" data-value="medio_prazo"><?php echo $t['opt_medio']; ?></div>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="prazo_desejado" id="prazo_desejado" required>
+                            <input type="hidden" name="tipo_projeto" id="tipo_projeto" required>
+                        </div>
+
+                        <div class="custom-select-wrapper" data-name="prazo_desejado">
+                            <span class="select-label" id="prazo_desejado_label">
+                                <?php echo $t['form_prazo']; ?>
+                            </span>
+
+                            <div class="custom-select">
+                                <button
+                                    type="button"
+                                    class="select-trigger"
+                                    id="prazo_desejado_trigger"
+                                    aria-haspopup="listbox"
+                                    aria-expanded="false"
+                                    aria-controls="prazo_desejado_options"
+                                    aria-labelledby="prazo_desejado_label prazo_desejado_value"
+                                >
+                                    <span id="prazo_desejado_value">
+                                        <?php echo $t['form_selecione']; ?>
+                                    </span>
+                                    <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                                </button>
+
+                                <ul
+                                    class="custom-options"
+                                    id="prazo_desejado_options"
+                                    role="listbox"
+                                    aria-labelledby="prazo_desejado_label"
+                                >
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="urgente">
+                                        <?php echo $t['opt_urgente']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="curto_prazo">
+                                        <?php echo $t['opt_curto']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="medio_prazo">
+                                        <?php echo $t['opt_medio']; ?>
+                                    </li>
+                                </ul>
                             </div>
 
-                            <div class="custom-select-wrapper" data-name="possui_layout">
-                                <label><?php echo $t['form_layout']; ?></label>
-                                <div class="custom-select">
-                                    <div class="select-trigger" tabindex="0">
-                                        <span><?php echo $t['form_selecione']; ?></span>
-                                        <i class="fa-solid fa-chevron-down"></i>
-                                    </div>
-                                    <div class="custom-options">
-                                        <div class="custom-option" data-value="aprovado"><?php echo $t['opt_layout_aprovado']; ?></div>
-                                        <div class="custom-option" data-value="em_desenvolvimento"><?php echo $t['opt_layout_desenvolvimento']; ?></div>
-                                        <div class="custom-option" data-value="nao"><?php echo $t['opt_layout_nao']; ?></div>
-                                        <div class="custom-option" data-value="implementacao"><?php echo $t['opt_layout_implementacao']; ?></div>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="possui_layout" id="possui_layout" required>
+                            <input type="hidden" name="prazo_desejado" id="prazo_desejado" required>
+                        </div>
+
+                        <div class="custom-select-wrapper" data-name="possui_layout">
+                            <span class="select-label" id="possui_layout_label">
+                                <?php echo $t['form_layout']; ?>
+                            </span>
+
+                            <div class="custom-select">
+                                <button
+                                    type="button"
+                                    class="select-trigger"
+                                    id="possui_layout_trigger"
+                                    aria-haspopup="listbox"
+                                    aria-expanded="false"
+                                    aria-controls="possui_layout_options"
+                                    aria-labelledby="possui_layout_label possui_layout_value"
+                                >
+                                    <span id="possui_layout_value">
+                                        <?php echo $t['form_selecione']; ?>
+                                    </span>
+                                    <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                                </button>
+
+                                <ul
+                                    class="custom-options"
+                                    id="possui_layout_options"
+                                    role="listbox"
+                                    aria-labelledby="possui_layout_label"
+                                >
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="aprovado">
+                                        <?php echo $t['opt_layout_aprovado']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="em_desenvolvimento">
+                                        <?php echo $t['opt_layout_desenvolvimento']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="nao">
+                                        <?php echo $t['opt_layout_nao']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="implementacao">
+                                        <?php echo $t['opt_layout_implementacao']; ?>
+                                    </li>
+                                </ul>
                             </div>
 
-                            <div class="custom-select-wrapper" data-name="tipo_contrato">
-                                <label><?php echo $t['form_contrato']; ?></label>
-                                <div class="custom-select">
-                                    <div class="select-trigger" tabindex="0">
-                                        <span><?php echo $t['form_selecione']; ?></span>
-                                        <i class="fa-solid fa-chevron-down"></i>
-                                    </div>
-                                    <div class="custom-options">
-                                        <div class="custom-option" data-value="fechado"><?php echo $t['opt_contrato_fechado']; ?></div>
-                                        <div class="custom-option" data-value="pontual"><?php echo $t['opt_contrato_pontual']; ?></div>
-                                        <div class="custom-option" data-value="recorrente"><?php echo $t['opt_contrato_recorrente']; ?></div>
-                                        <div class="custom-option" data-value="equipe"><?php echo $t['opt_contrato_equipe']; ?></div>
-                                        <div class="custom-option" data-value="white_label"><?php echo $t['opt_contrato_white']; ?></div>
-                                        <div class="custom-option" data-value="oportunidade"><?php echo $t['opt_contrato_oportunidade']; ?></div>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="tipo_contrato" id="tipo_contrato" required>
+                            <input type="hidden" name="possui_layout" id="possui_layout" required>
+                        </div>
+
+                        <div class="custom-select-wrapper" data-name="tipo_contrato">
+                            <span class="select-label" id="tipo_contrato_label">
+                                <?php echo $t['form_contrato']; ?>
+                            </span>
+
+                            <div class="custom-select">
+                                <button
+                                    type="button"
+                                    class="select-trigger"
+                                    id="tipo_contrato_trigger"
+                                    aria-haspopup="listbox"
+                                    aria-expanded="false"
+                                    aria-controls="tipo_contrato_options"
+                                    aria-labelledby="tipo_contrato_label tipo_contrato_value"
+                                >
+                                    <span id="tipo_contrato_value">
+                                        <?php echo $t['form_selecione']; ?>
+                                    </span>
+                                    <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                                </button>
+
+                                <ul
+                                    class="custom-options"
+                                    id="tipo_contrato_options"
+                                    role="listbox"
+                                    aria-labelledby="tipo_contrato_label"
+                                >
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="fechado">
+                                        <?php echo $t['opt_contrato_fechado']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="pontual">
+                                        <?php echo $t['opt_contrato_pontual']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="recorrente">
+                                        <?php echo $t['opt_contrato_recorrente']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="equipe">
+                                        <?php echo $t['opt_contrato_equipe']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="white_label">
+                                        <?php echo $t['opt_contrato_white']; ?>
+                                    </li>
+                                    <li class="custom-option" role="option" tabindex="-1" aria-selected="false" data-value="oportunidade">
+                                        <?php echo $t['opt_contrato_oportunidade']; ?>
+                                    </li>
+                                </ul>
                             </div>
+
+                            <input type="hidden" name="tipo_contrato" id="tipo_contrato" required>
+                        </div>
 
                             <div>
                                 <label for="mensagem"><?php echo $t['form_mensagem']; ?></label>
